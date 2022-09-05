@@ -1,10 +1,12 @@
 package com.contest.ichapp.pojo.dto;
 
 import com.contest.ichapp.pojo.dto.resultEnum.ResultEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 public class CommonResult<T> {
 
@@ -56,5 +58,19 @@ public class CommonResult<T> {
      */
     public static <T> CommonResult<T> fail(String message) {
         return new CommonResult<>(ResultEnum.FAILED.getCode(), message, null);
+    }
+
+    /**
+     * 用户名错误
+     */
+    public static <T> CommonResult<T> wrongUserName() {
+        return new CommonResult<>(ResultEnum.WRONG_USER_NAME.getCode(), ResultEnum.WRONG_USER_NAME.getMessage(), null);
+    }
+
+    /**
+     * 密码错误
+     */
+    public static <T> CommonResult<T> wrongPassword() {
+        return new CommonResult<>(ResultEnum.WRONG_PASSWORD.getCode(), ResultEnum.WRONG_PASSWORD.getMessage(), null);
     }
 }
