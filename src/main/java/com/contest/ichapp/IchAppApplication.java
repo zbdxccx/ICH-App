@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @SpringBootApplication
 @MapperScan("com.contest.ichapp.mapper")
 public class IchAppApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(IchAppApplication.class, args);
     }

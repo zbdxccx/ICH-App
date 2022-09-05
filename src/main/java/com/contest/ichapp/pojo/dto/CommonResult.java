@@ -61,16 +61,9 @@ public class CommonResult<T> {
     }
 
     /**
-     * 用户名错误
+     * 用户名或密码错误
      */
-    public static <T> CommonResult<T> wrongUserName() {
-        return new CommonResult<>(ResultEnum.WRONG_USER_NAME.getCode(), ResultEnum.WRONG_USER_NAME.getMessage(), null);
-    }
-
-    /**
-     * 密码错误
-     */
-    public static <T> CommonResult<T> wrongPassword() {
-        return new CommonResult<>(ResultEnum.WRONG_PASSWORD.getCode(), ResultEnum.WRONG_PASSWORD.getMessage(), null);
+    public static <T> CommonResult<T> wrongLogin() {
+        return new CommonResult<>(ResultEnum.WRONG_LOGIN.getCode(), ResultEnum.WRONG_LOGIN.getMessage(), null);
     }
 }
