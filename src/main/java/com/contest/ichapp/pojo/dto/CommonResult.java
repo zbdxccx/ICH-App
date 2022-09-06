@@ -66,4 +66,8 @@ public class CommonResult<T> {
     public static <T> CommonResult<T> wrongLogin() {
         return new CommonResult<>(ResultEnum.WRONG_LOGIN.getCode(), ResultEnum.WRONG_LOGIN.getMessage(), null);
     }
+
+    public static <T> CommonResult<T> distinct() {
+        return new CommonResult<>(ResultEnum.DISTINCT.getCode(), ResultEnum.DISTINCT.getMessage(), null);
+    }
 }

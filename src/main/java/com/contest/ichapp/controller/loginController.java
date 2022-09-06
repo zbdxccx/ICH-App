@@ -22,4 +22,9 @@ public class loginController {
     public CommonResult<String> login(@RequestBody LoginParam param) {
         return loginService.login(param);
     }
+
+    @PostMapping("/register")
+    public CommonResult<String> register(@RequestBody LoginParam param) {
+        return loginService.register(param);
+    }
 }
