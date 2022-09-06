@@ -9,10 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Constant {
-
-    private static final long ONE_HOUR = 3600L;
-
-    private static final String USER_NAME = "Admin";
-
-    private static final String PASSWORD = "123456";
+    public static final String GMT8 = "GMT+8";
+    public static final String DATE_FORMAT = "d/M/yyyy";
+    public static final String WEEK_FORMAT = "E";
 }

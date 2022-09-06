@@ -1,6 +1,8 @@
 package com.contest.ichapp.controller;
 
 import com.contest.ichapp.pojo.dto.CommonResult;
+import com.contest.ichapp.pojo.dto.param.RecommendDateParam;
+import com.contest.ichapp.pojo.dto.param.RecommendParam;
 import com.contest.ichapp.service.RecommendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,12 @@ public class RecommendController {
     }
 
     @GetMapping("/recommend/img")
-    public CommonResult<String> recommend() {
+    public CommonResult<RecommendParam> recommend() {
         return recommendService.recommend();
+    }
+
+    @GetMapping("/recommend/date")
+    public CommonResult<RecommendDateParam> localTime() {
+        return recommendService.localTime();
     }
 }

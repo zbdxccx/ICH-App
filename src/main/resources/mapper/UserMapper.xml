@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.contest.ichapp.mapper.UserMapper">
     <resultMap id="BaseResultMap" type="com.contest.ichapp.pojo.domain.User">
-        <id column="user_id" jdbcType="INTEGER" property="userId"/>
+        <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
     </resultMap>
