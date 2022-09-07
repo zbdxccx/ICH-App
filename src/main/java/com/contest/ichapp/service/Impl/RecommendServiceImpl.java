@@ -24,8 +24,8 @@ public class RecommendServiceImpl implements RecommendService {
     @Override
     public CommonResult<RecommendParam> recommend() {
         int id = 1;
-        String img = "http://43.143.162.177:8085/static/img/" + id + ".jpg";
         Collection collection = collectionMapper.selectById(id);
+        String img = collection.getImg();
         RecommendParam param = new RecommendParam(img, collection.getName(), collection.getDescription());
         return CommonResult.success(param);
     }
