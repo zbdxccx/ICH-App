@@ -8,4 +8,7 @@ public class Collection {
     private String name;
     private String description;
     private Integer tagId;
+    private Integer museumId;
+    private String location;
+    private String img;
 }

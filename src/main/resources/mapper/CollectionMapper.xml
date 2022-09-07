@@ -5,10 +5,17 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="tag_id" jdbcType="VARCHAR" property="tagId"/>
+        <result column="museum_id" jdbcType="VARCHAR" property="museumId"/>
+        <result column="location" jdbcType="VARCHAR" property="location"/>
+        <result column="img_url" jdbcType="VARCHAR" property="img"/>
     </resultMap>
     <select id="selectById" resultMap="BaseResultMap">
         select *
         from collection
         where id = #{id,jdbcType=INTEGER} limit 1
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from collection
     </select>
 </mapper>
