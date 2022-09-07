@@ -18,8 +18,14 @@ public class HomeServiceImpl implements HomeService {
     CollectionMapper collectionMapper;
 
     @Override
-    public CommonResult<InfoResult> getAllInfo() {
-        List<Collection> collections = collectionMapper.selectAll();
+    public CommonResult<InfoResult> getAllInfo(String keyword) {
+
+        List<Collection> collections;
+        if ("all".equals(keyword)) collections = collectionMapper.selectAll();
+        else collections = collectionMapper.selectAllLike(keyword);
+
+        if (collections.isEmpty()) return CommonResult.fail("无相关数据");
+
         List<InfoParam> params = new ArrayList<>();
         for (Collection collection : collections) {
             Integer id = collection.getId();

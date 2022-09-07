@@ -10,4 +10,6 @@ public interface CollectionMapper {
     Collection selectById(Integer id);
 
     List<Collection> selectAll();
+
+    List<Collection> selectAllLike(String keyword);
 }

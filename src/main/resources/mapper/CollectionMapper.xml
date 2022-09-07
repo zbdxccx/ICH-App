@@ -18,4 +18,14 @@
         select *
         from collection
     </select>
+    <select id="selectAllLike" resultMap="BaseResultMap">
+        select *
+        from (collection co
+            left join tag t on co.tag_id = t.id)
+                 left join museum m on co.museum_id = m.id
+        where co.name like concat('%', #{keyword}, '%')
+           or co.location like concat('%', #{keyword}, '%')
+           or t.name like concat('%', #{keyword}, '%')
+           or m.name like concat('%', #{keyword}, '%')
+    </select>
 </mapper>

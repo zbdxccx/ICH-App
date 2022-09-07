@@ -5,6 +5,7 @@ import com.contest.ichapp.pojo.dto.result.InfoResult;
 import com.contest.ichapp.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,7 +19,7 @@ public class HomeController {
     }
 
     @GetMapping("/home/info/all")
-    public CommonResult<InfoResult> getAllInfo() {
-        return homeService.getAllInfo();
+    public CommonResult<InfoResult> getAllInfo(@RequestParam(value = "keyword", required = false, defaultValue = "all") String keyword) {
+        return homeService.getAllInfo(keyword);
     }
 }
