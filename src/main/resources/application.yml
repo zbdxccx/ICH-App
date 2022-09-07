@@ -13,7 +13,7 @@ spring:
     static-path-pattern: /static/**
   web:
     resources:
-      static-locations: /home/ubuntu/img/**
+      static-locations: /home/lighthouse/
 
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
