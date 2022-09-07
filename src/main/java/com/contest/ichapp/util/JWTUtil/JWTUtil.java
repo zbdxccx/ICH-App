@@ -67,6 +67,7 @@ public class JWTUtil {
 
     public static String getToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
+        if (cookies == null) return null;
         String token = null;
         for (Cookie cookie : cookies) {
             String name = cookie.getName();
