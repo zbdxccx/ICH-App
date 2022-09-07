@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -23,9 +22,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public CommonResult<String> login(@RequestBody LoginParam param, HttpServletResponse response) {
-        Cookie cookie = new Cookie("sessionId", "testCookie123456");
-        response.addCookie(cookie);
-        return loginService.login(param);
+        return loginService.login(param, response);
     }
 
     @PostMapping("/register")

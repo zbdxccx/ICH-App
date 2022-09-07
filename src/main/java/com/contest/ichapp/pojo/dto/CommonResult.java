@@ -70,4 +70,7 @@ public class CommonResult<T> {
     public static <T> CommonResult<T> distinct() {
         return new CommonResult<>(ResultEnum.DISTINCT.getCode(), ResultEnum.DISTINCT.getMessage(), null);
     }
+    public static <T> CommonResult<T> tokenWrong() {
+        return new CommonResult<>(ResultEnum.TOKEN_WRONG.getCode(), ResultEnum.TOKEN_WRONG.getMessage(), null);
+    }
 }

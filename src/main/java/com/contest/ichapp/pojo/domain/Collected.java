@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Collected {
-    private Integer id;
+    private Integer userId;
     private Integer collectionId;
 }

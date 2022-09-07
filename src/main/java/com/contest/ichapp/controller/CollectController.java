@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class CollectController {
 
@@ -19,12 +21,12 @@ public class CollectController {
     }
 
     @PostMapping("/home/info/collect")
-    public CommonResult<String> collect(@RequestBody CollectParam collectParam) {
-        return collectService.collect(collectParam);
+    public CommonResult<String> collect(@RequestBody CollectParam collectParam, HttpServletRequest request) {
+        return collectService.collect(collectParam,request);
     }
 
     @PostMapping("/home/info/cancel")
-    public CommonResult<String> cancel(@RequestBody CollectParam collectParam) {
-        return collectService.cancel(collectParam);
+    public CommonResult<String> cancel(@RequestBody CollectParam collectParam,HttpServletRequest request) {
+        return collectService.cancel(collectParam,request);
     }
 }

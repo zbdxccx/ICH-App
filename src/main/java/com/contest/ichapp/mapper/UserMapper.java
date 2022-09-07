@@ -9,6 +9,8 @@ public interface UserMapper {
 
     UserCheckVo selectToDistinct(String username);
 
+    Integer selectUserIdByUsername(String username);
+
     Integer insertByParam(String username, String password);
 
 }

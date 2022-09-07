@@ -5,9 +5,12 @@ import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.LoginParam;
 import com.contest.ichapp.pojo.dto.vo.UserCheckVo;
 import com.contest.ichapp.service.LoginService;
+import com.contest.ichapp.util.JWTUtil.JWTUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -15,9 +18,17 @@ public class LoginServiceImpl implements LoginService {
     UserMapper userMapper;
 
     @Override
-    public CommonResult<String> login(LoginParam param) {
+    public CommonResult<String> login(LoginParam param, HttpServletResponse response) {
         String username = param.getUsername();
         String password = param.getPassword();
+
+        Integer userId = userMapper.selectUserIdByUsername(username);
+
+        //生成token
+        String token = JWTUtil.createToken(userId);
+        Cookie cookie = new Cookie("token", token);
+        response.addCookie(cookie);
+
         //验证用户名和密码是否正确
         UserCheckVo userCheckVo = userMapper.selectToCheck(username, password);
         if (!userCheckVo.getCheck()) return CommonResult.wrongLogin();
