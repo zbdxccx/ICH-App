@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.TimeZone;
 
 @Service
@@ -37,7 +38,7 @@ public class RecommendServiceImpl implements RecommendService {
         TimeZone timeZone = TimeZone.getTimeZone(Constant.GMT8);
         dateTime.setTimeZone(timeZone);
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
-        SimpleDateFormat weekFormat = new SimpleDateFormat(Constant.WEEK_FORMAT);
+        SimpleDateFormat weekFormat = new SimpleDateFormat(Constant.WEEK_FORMAT, Locale.SIMPLIFIED_CHINESE);
 
         ChineseDate chineseDate = new ChineseDate(dateTime);
         String chineseDay = chineseDate.getChineseDay();
