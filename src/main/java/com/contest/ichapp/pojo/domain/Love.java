@@ -3,7 +3,7 @@ package com.contest.ichapp.pojo.domain;
 import lombok.Data;
 
 @Data
-public class Collected {
+public class Love {
     private Integer userId;
     private Integer collectionId;
 }

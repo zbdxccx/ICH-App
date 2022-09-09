@@ -10,5 +10,4 @@ public interface CollectService {
 
     CommonResult<String> cancel(CollectParam collectParam,HttpServletRequest request);
 
-
 }
