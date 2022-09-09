@@ -40,18 +40,18 @@ public class JWTUtil {
     }
 
     //验证token
-    public static boolean checkToken(String token) {
+    public static boolean checkTokenWrong(String token) {
 
         try {
             Algorithm algorithm = Algorithm.HMAC256(Constant.PRIVATE_SIGN);
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
-            return true;
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Token过期");
         }
-        return false;
+        return true;
     }
 
     public static Integer getUserId(String token) {
@@ -67,13 +67,14 @@ public class JWTUtil {
 
     public static String getToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if (cookies == null) return null;
         String token = null;
-        for (Cookie cookie : cookies) {
-            String name = cookie.getName();
-            if ("token".equals(name)) {
-                token = cookie.getValue();
-                break;
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                String name = cookie.getName();
+                if ("token".equals(name)) {
+                    token = cookie.getValue();
+                    break;
+                }
             }
         }
         return token;

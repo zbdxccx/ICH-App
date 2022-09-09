@@ -5,18 +5,18 @@
         <result column="collection_id" jdbcType="VARCHAR" property="collectionId"/>
     </resultMap>
     <insert id="insert">
-        insert into collected
+        insert into love
         values (#{userId,jdbcType=INTEGER}, #{collectionId,jdbcType=INTEGER})
     </insert>
     <delete id="delete">
         delete
-        from collected
+        from love
         where user_id = #{userId,jdbcType=INTEGER}
-          and collection_id = #{collectionId,jdbcType=INTEGER} limit 1
+          and collection_id = #{collectionId,jdbcType=INTEGER}
     </delete>
     <select id="selectToCount" resultType="java.lang.Integer">
         select count(*)
-        from collected
+        from love
         where user_id = #{userId,jdbcType=INTEGER}
           and collection_id = #{collectionId,jdbcType=INTEGER} limit 1
     </select>

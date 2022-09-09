@@ -21,7 +21,7 @@ public class CollectServiceImpl implements CollectService {
         String token = JWTUtil.getToken(request);
         if (token == null) return CommonResult.tokenNull();
         //鉴别token
-        if (!JWTUtil.checkToken(token)) return CommonResult.tokenWrong();
+        if (JWTUtil.checkTokenWrong(token)) return CommonResult.tokenWrong();
         Integer userId = JWTUtil.getUserId(token);
 
         Integer collectionId = collectParam.getCollectionId();
@@ -36,7 +36,7 @@ public class CollectServiceImpl implements CollectService {
         String token = JWTUtil.getToken(request);
         if (token == null) return CommonResult.tokenNull();
         //鉴别token
-        if (!JWTUtil.checkToken(token)) return CommonResult.tokenWrong();
+        if (JWTUtil.checkTokenWrong(token)) return CommonResult.tokenWrong();
         Integer userId = JWTUtil.getUserId(token);
 
         Integer collectionId = collectParam.getCollectionId();
