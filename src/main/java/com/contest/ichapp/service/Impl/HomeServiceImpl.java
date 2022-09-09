@@ -5,6 +5,7 @@ import com.contest.ichapp.pojo.domain.Collection;
 import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.InfoParam;
 import com.contest.ichapp.pojo.dto.result.InfoResult;
+import com.contest.ichapp.pojo.dto.vo.MoreInfoVo;
 import com.contest.ichapp.service.HomeService;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +38,11 @@ public class HomeServiceImpl implements HomeService {
         }
         InfoResult result = new InfoResult(params);
         return CommonResult.success(result);
+    }
+
+    @Override
+    public CommonResult<MoreInfoVo> getMoreInfo(Integer collectionId) {
+        MoreInfoVo collection = collectionMapper.selectAllInfoById(collectionId);
+        return CommonResult.success(collection);
     }
 }

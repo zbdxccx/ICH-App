@@ -28,4 +28,16 @@
            or t.name like concat('%', #{keyword}, '%')
            or m.name like concat('%', #{keyword}, '%')
     </select>
+    <select id="selectAllInfoById" resultType="com.contest.ichapp.pojo.dto.vo.MoreInfoVo">
+        select co.name as `naem`,
+               t.naem  as `tag`,
+               m.name  as `museum`,
+               d.name  as `dynasty`
+        from ((collection co
+            left join tag t on co.tag_id = t.id)
+            left join museum m on co.museum_id = m.id)
+                 left join dynasty d on d.id = co.dynasty_id
+        where co.id = #{collectionId} limit 1
+    </select>
+
 </mapper>
