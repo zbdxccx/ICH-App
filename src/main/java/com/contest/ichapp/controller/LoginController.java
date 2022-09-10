@@ -2,7 +2,6 @@ package com.contest.ichapp.controller;
 
 import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.LoginParam;
-import com.contest.ichapp.pojo.dto.param.PhoneParam;
 import com.contest.ichapp.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +30,4 @@ public class LoginController {
         return loginService.register(param);
     }
 
-    @PostMapping("/send")
-    public CommonResult<String> sendMessage(@RequestBody PhoneParam param) {
-        return loginService.sendMessage(param);
-    }
 }
