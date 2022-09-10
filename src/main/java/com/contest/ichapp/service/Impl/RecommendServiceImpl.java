@@ -2,7 +2,6 @@ package com.contest.ichapp.service.Impl;
 
 import cn.hutool.core.date.ChineseDate;
 import cn.hutool.core.date.DateTime;
-import com.contest.ichapp.common.Constant;
 import com.contest.ichapp.mapper.CollectionMapper;
 import com.contest.ichapp.pojo.domain.Collection;
 import com.contest.ichapp.pojo.dto.CommonResult;
@@ -15,6 +14,8 @@ import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static com.contest.ichapp.common.Constant.*;
 
 @Service
 public class RecommendServiceImpl implements RecommendService {
@@ -35,10 +36,10 @@ public class RecommendServiceImpl implements RecommendService {
     public CommonResult<RecommendDateParam> localTime() {
         DateTime dateTime = new DateTime();
 
-        TimeZone timeZone = TimeZone.getTimeZone(Constant.GMT8);
+        TimeZone timeZone = TimeZone.getTimeZone(GMT8);
         dateTime.setTimeZone(timeZone);
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
-        SimpleDateFormat weekFormat = new SimpleDateFormat(Constant.WEEK_FORMAT, Locale.SIMPLIFIED_CHINESE);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        SimpleDateFormat weekFormat = new SimpleDateFormat(WEEK_FORMAT, Locale.SIMPLIFIED_CHINESE);
 
         ChineseDate chineseDate = new ChineseDate(dateTime);
         String chineseDay = chineseDate.getChineseDay();

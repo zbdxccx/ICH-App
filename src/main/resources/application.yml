@@ -20,5 +20,13 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
-
-
+tencent:
+  sms:
+    keyId: AKIDykGXZLr78tOdMq31jBOL3VifMo1yf6IE
+    keySecret: kniOozua0A5lR0OaYIo6Azc2EByYxA9x
+    smsSdkAppId: 1400735487
+    signName: 拾旧空间公众号
+    templateIdLogin: 1539056
+    templateIdRegister: 1539063
+    smsClient: ap-nanjing
+    url: sms.tencentcloudapi.com
