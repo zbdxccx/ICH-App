@@ -3,6 +3,7 @@ package com.contest.ichapp.service.Impl;
 import com.contest.ichapp.mapper.UserMapper;
 import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.LoginParam;
+import com.contest.ichapp.pojo.dto.param.PhoneParam;
 import com.contest.ichapp.pojo.dto.vo.UserCheckVo;
 import com.contest.ichapp.service.LoginService;
 import com.contest.ichapp.util.JWTUtil.JWTUtil;
@@ -39,9 +40,6 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public CommonResult<String> register(LoginParam param) {
         String phoneNum = param.getPhoneNum();
-        String verificationCode = SendMessageUtil.sendMessage(phoneNum);
-        if ("E0400".equals(verificationCode)) return CommonResult.fail("验证码发送失败");
-        //TODO Store verification code with redis
 
         //验证用户名是否已被使用
         UserCheckVo userCheckVo = userMapper.selectToDistinct(phoneNum);
@@ -52,4 +50,13 @@ public class LoginServiceImpl implements LoginService {
         if (userMapper.insertByParam(phoneNum, password) == 0) return CommonResult.fail("注册失败");
         return CommonResult.success("注册成功");
     }
+
+    @Override
+    public CommonResult<String> sendMessage(PhoneParam param) {
+        String verificationCode = SendMessageUtil.sendMessage("+86" + param.getPhoneNum());
+        if ("E0400".equals(verificationCode)) return CommonResult.fail("验证码发送失败");
+        //TODO Store verification code with redis
+        return CommonResult.success("验证码发送成功");
+    }
+
 }
