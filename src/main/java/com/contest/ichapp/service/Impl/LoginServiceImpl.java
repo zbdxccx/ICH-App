@@ -5,9 +5,11 @@ import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.LoginParam;
 import com.contest.ichapp.pojo.dto.param.PhoneParam;
 import com.contest.ichapp.pojo.dto.vo.UserCheckVo;
+import com.contest.ichapp.service.CacheService.CacheService;
 import com.contest.ichapp.service.LoginService;
 import com.contest.ichapp.util.JWTUtil.JWTUtil;
 import com.contest.ichapp.util.SendMessageUtil.SendMessageUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,7 +19,15 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 public class LoginServiceImpl implements LoginService {
     @Resource
-    UserMapper userMapper;
+    private UserMapper userMapper;
+
+    private final CacheService cacheService;
+
+    @Autowired
+    public LoginServiceImpl(CacheService cacheService) {
+        this.cacheService = cacheService;
+    }
+
 
     @Override
     public CommonResult<String> login(LoginParam param, HttpServletResponse response) {
@@ -40,7 +50,9 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public CommonResult<String> register(LoginParam param) {
         String phoneNum = param.getPhoneNum();
-
+        String verificationCode = param.getVerificationCode();
+        String verificationCodeCache = cacheService.getVerificationCode();
+        if (!verificationCode.equals(verificationCodeCache)) return CommonResult.fail("验证码错误");
         //验证用户名是否已被使用
         UserCheckVo userCheckVo = userMapper.selectToDistinct(phoneNum);
         if (userCheckVo.getCheck()) return CommonResult.distinct();
@@ -53,10 +65,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public CommonResult<String> sendMessage(PhoneParam param) {
-        String verificationCode = SendMessageUtil.sendMessage("+86" + param.getPhoneNum());
-        if ("E0400".equals(verificationCode)) return CommonResult.fail("验证码发送失败");
+        String verificationCode = cacheService.getVerificationCode();
+        Boolean flag = SendMessageUtil.sendMessage("+86" + param.getPhoneNum(), verificationCode);
+        if (!flag) return CommonResult.fail("验证码发送失败");
         //TODO Store verification code with redis
         return CommonResult.success("验证码发送成功");
     }
-
 }

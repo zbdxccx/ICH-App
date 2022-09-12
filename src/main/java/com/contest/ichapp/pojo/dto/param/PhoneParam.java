@@ -1,9 +1,8 @@
 package com.contest.ichapp.pojo.dto.param;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 @Data
 public class PhoneParam {

@@ -1,6 +1,5 @@
 package com.contest.ichapp.util.SendMessageUtil;
 
-import com.contest.ichapp.util.RandomUtil.RandomUtil;
 import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import com.tencentcloudapi.common.profile.ClientProfile;
@@ -14,8 +13,9 @@ import static com.contest.ichapp.util.ConstantSmsUtil.ConstantSmsUtil.*;
 
 @Slf4j
 public class SendMessageUtil {
-    public static String sendMessage(String phoneNum) {
-        String verificationCode = RandomUtil.getSixBitRandom();
+
+    public static Boolean sendMessage(String phoneNum, String verificationCode) {
+//        String verificationCode = RandomUtil.getSixBitRandom();
         log.info("[verificationCode]: " + verificationCode);
         try {
             // 实例化一个认证对象，入参需要传入腾讯云账户secretId，secretKey,此处还需注意密钥对的保密
@@ -48,8 +48,8 @@ public class SendMessageUtil {
             System.out.println(SendSmsResponse.toJsonString(resp));
         } catch (TencentCloudSDKException e) {
             log.info(e.toString());
-            return "E0400";
+            return false;
         }
-        return verificationCode;
+        return true;
     }
 }
