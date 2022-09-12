@@ -13,8 +13,10 @@ import static com.contest.ichapp.util.ConstantSmsUtil.ConstantSmsUtil.*;
 
 @Slf4j
 public class SendMessageUtil {
-
-    public static Boolean sendMessage(String phoneNum, String verificationCode) {
+    /**
+     * @param type 短信模板 1-登录 2-注册
+     */
+    public static Boolean sendMessage(String phoneNum, String verificationCode, Integer type) {
 //        String verificationCode = RandomUtil.getSixBitRandom();
         log.info("[verificationCode]: " + verificationCode);
         try {
@@ -37,10 +39,16 @@ public class SendMessageUtil {
 
             req.setSmsSdkAppId(SMS_SDK_APP_ID);
             req.setSignName(SIGN_NAME);
-            req.setTemplateId(TEMPLATE_ID_LOGIN);
 
-            String[] templateParamSet1 = {verificationCode};
-            req.setTemplateParamSet(templateParamSet1);
+            if (type == 1) {
+                req.setTemplateId(TEMPLATE_ID_LOGIN);
+                String[] templateParamSet1 = {verificationCode};
+                req.setTemplateParamSet(templateParamSet1);
+            } else {
+                req.setTemplateId(TEMPLATE_ID_REGISTER);
+                String[] templateParamSet1 = {verificationCode, "5"};
+                req.setTemplateParamSet(templateParamSet1);
+            }
 
             // 返回的resp是一个SendSmsResponse的实例，与请求对象对应
             SendSmsResponse resp = client.SendSms(req);
