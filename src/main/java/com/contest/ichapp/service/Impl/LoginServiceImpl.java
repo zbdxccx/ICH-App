@@ -51,7 +51,7 @@ public class LoginServiceImpl implements LoginService {
     public CommonResult<String> register(LoginParam param) {
         String phoneNum = param.getPhoneNum();
         String verificationCode = param.getVerificationCode();
-        String verificationCodeCache = cacheService.getVerificationCode();
+        String verificationCodeCache = cacheService.getVerificationCode(phoneNum);
         if (!verificationCode.equals(verificationCodeCache)) return CommonResult.fail("验证码错误");
         //验证用户名是否已被使用
         UserCheckVo userCheckVo = userMapper.selectToDistinct(phoneNum);
@@ -65,7 +65,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public CommonResult<String> sendMessage(PhoneParam param) {
-        String verificationCode = cacheService.getVerificationCode();
+        String verificationCode = cacheService.updateVerificationCode(param.getPhoneNum());
         Boolean flag = SendMessageUtil.sendMessage("+86" + param.getPhoneNum(), verificationCode);
         if (!flag) return CommonResult.fail("验证码发送失败");
         //TODO Store verification code with redis

@@ -32,7 +32,7 @@ public class RedisCacheManagerConfig {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
 
-        Jackson2JsonRedisSerializer serializer = new Jackson2JsonRedisSerializer(Object.class);
+        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -49,8 +49,7 @@ public class RedisCacheManagerConfig {
 
     @Bean
     CacheManager cacheManager() {
-        return new RedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(factory),
-                this.getRedisCacheConfigurationWithTtl(60 + new Random().nextInt(5)), // 默认策略，未配置的 key 会使用这个
+        return new RedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(factory), this.getRedisCacheConfigurationWithTtl(60 + new Random().nextInt(5)), // 默认策略，未配置的 key 会使用这个
                 this.getRedisCacheConfigurationMap() // 指定 key 策略
         );
     }
@@ -63,17 +62,14 @@ public class RedisCacheManagerConfig {
 
     private RedisCacheConfiguration getRedisCacheConfigurationWithTtl(Integer minute) {
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        ObjectMapper om = new ObjectMapper();
-        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        jackson2JsonRedisSerializer.setObjectMapper(om);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        jackson2JsonRedisSerializer.setObjectMapper(mapper);
 
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
-        redisCacheConfiguration = redisCacheConfiguration
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
-                .entryTtl(Duration.ofMinutes(minute));
+        redisCacheConfiguration = redisCacheConfiguration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer)).entryTtl(Duration.ofMinutes(minute));
 
         return redisCacheConfiguration;
     }
-
 }

@@ -11,20 +11,20 @@ import org.springframework.stereotype.Service;
 @CacheConfig(cacheNames = "CacheService")
 public class CacheServiceImpl implements CacheService {
     @Override
-    @Cacheable(cacheNames = "code")
-    public String getVerificationCode() {
+    @Cacheable(cacheNames = "code", key = "#phoneNum")
+    public String getVerificationCode(String phoneNum) {
         return RandomUtil.getSixBitRandom();
     }
 
     @Override
-    @CachePut(cacheNames = "code")
-    public String updateVerificationCode() {
+    @CachePut(cacheNames = "code", key = "#phoneNum")
+    public String updateVerificationCode(String phoneNum) {
         return RandomUtil.getSixBitRandom();
     }
 
     @Override
-    @CacheEvict(cacheNames = "code")
-    public String deleteVerificationCode() {
+    @CacheEvict(cacheNames = "code", key = "#phoneNum")
+    public String deleteVerificationCode(String phoneNum) {
         return RandomUtil.getSixBitRandom();
     }
 }

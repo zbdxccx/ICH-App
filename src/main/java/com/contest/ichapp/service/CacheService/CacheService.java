@@ -1,9 +1,9 @@
 package com.contest.ichapp.service.CacheService;
 
 public interface CacheService {
-    String getVerificationCode();
+    String getVerificationCode(String phoneNum);
 
-    String updateVerificationCode();
+    String updateVerificationCode(String phoneNum);
 
-    String deleteVerificationCode();
+    String deleteVerificationCode(String phoneNum);
 }
