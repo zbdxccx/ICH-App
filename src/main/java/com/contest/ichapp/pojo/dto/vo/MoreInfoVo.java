@@ -10,4 +10,5 @@ public class MoreInfoVo {
     private String tag;
     private String feature;
     private String more;
+    private String img;
 }

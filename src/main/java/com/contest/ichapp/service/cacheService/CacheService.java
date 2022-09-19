@@ -1,4 +1,4 @@
-package com.contest.ichapp.service.CacheService;
+package com.contest.ichapp.service.cacheService;
 
 public interface CacheService {
     String getVerificationCode(String phoneNum);

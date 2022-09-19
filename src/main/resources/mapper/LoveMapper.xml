@@ -20,5 +20,14 @@
         where user_id = #{userId,jdbcType=INTEGER}
           and collection_id = #{collectionId,jdbcType=INTEGER} limit 1
     </select>
+    <select id="selectByUserId" resultType="com.contest.ichapp.pojo.domain.Collection">
+        select c.id          as `id`,
+               c.name        as `name`,
+               c.description as `description`,
+               c.location    as `location`
+        from love l
+                 left join collection c on l.collection_id = c.id
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
 
 </mapper>

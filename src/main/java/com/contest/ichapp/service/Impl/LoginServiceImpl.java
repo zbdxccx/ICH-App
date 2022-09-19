@@ -5,7 +5,7 @@ import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.LoginParam;
 import com.contest.ichapp.pojo.dto.param.PhoneParam;
 import com.contest.ichapp.pojo.dto.vo.UserCheckVo;
-import com.contest.ichapp.service.CacheService.CacheService;
+import com.contest.ichapp.service.cacheService.CacheService;
 import com.contest.ichapp.service.LoginService;
 import com.contest.ichapp.util.JWTUtil.JWTUtil;
 import com.contest.ichapp.util.SendMessageUtil.SendMessageUtil;
@@ -67,7 +67,7 @@ public class LoginServiceImpl implements LoginService {
         if (type == 2) typeMessage = "注册";
         Boolean flag = SendMessageUtil.sendMessage("+86" + param.getPhoneNum(), verificationCode, type);
         if (!flag) return CommonResult.fail(typeMessage + "验证码发送失败");
-        //TODO Store verification code with redis
+        //todo Store verification code with redis
         return CommonResult.success(typeMessage + "验证码发送成功");
     }
 

@@ -1,4 +1,4 @@
-package com.contest.ichapp.service.CacheService;
+package com.contest.ichapp.service.cacheService;
 
 import com.contest.ichapp.util.RandomUtil.RandomUtil;
 import org.springframework.cache.annotation.CacheConfig;
