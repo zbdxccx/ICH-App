@@ -8,16 +8,19 @@ import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.RecommendDateParam;
 import com.contest.ichapp.pojo.dto.param.RecommendParam;
 import com.contest.ichapp.service.RecommendService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
 
 import static com.contest.ichapp.common.Constant.*;
 
 @Service
+@Slf4j
 public class RecommendServiceImpl implements RecommendService {
 
     @Resource
@@ -25,7 +28,8 @@ public class RecommendServiceImpl implements RecommendService {
 
     @Override
     public CommonResult<RecommendParam> recommend() {
-        int id = 1;
+        int id = new Random().nextInt(collectionMapper.selectCountAll()) + 1;
+        log.info(String.valueOf(id));
         Collection collection = collectionMapper.selectById(id);
         String img = collection.getImg();
         RecommendParam param = new RecommendParam(img, collection.getName(), collection.getDescription());

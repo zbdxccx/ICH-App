@@ -12,6 +12,7 @@ public interface CollectionMapper {
     MoreInfoVo selectAllInfoById(Integer id);
 
     List<Collection> selectAll();
+    Integer selectCountAll();
 
     List<Collection> selectAllLike(String keyword);
 }

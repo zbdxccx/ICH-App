@@ -2,6 +2,7 @@ package com.contest.ichapp.controller;
 
 import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.result.CollectionResult;
+import com.contest.ichapp.pojo.dto.result.HistoryResult;
 import com.contest.ichapp.service.PersonalHomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,5 +23,10 @@ public class PersonalHomeController {
     @GetMapping("/personal/collection")
     public CommonResult<CollectionResult> getAllCollection(HttpServletRequest request) {
         return personalHomeService.getAllCollection(request);
+    }
+
+    @GetMapping("/personal/history")
+    public CommonResult<HistoryResult> getAllHistory(HttpServletRequest request) {
+        return personalHomeService.getAllHistory(request);
     }
 }

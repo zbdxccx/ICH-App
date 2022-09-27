@@ -5,13 +5,15 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.contest.ichapp.common.Constant;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.contest.ichapp.common.Constant.EXPIRE_DATE;
+import static com.contest.ichapp.common.Constant.PRIVATE_SIGN;
 
 /**
  * JWT生成及校验工具类
@@ -20,12 +22,12 @@ public class JWTUtil {
     //实现签名方法
     public static String createToken(Integer userId) {
 
-        String token = "";
+        String token;
         try {
             //过期时间
-            Date date = new Date(System.currentTimeMillis() + Constant.EXPIRE_DATE);
+            Date date = new Date(System.currentTimeMillis() + EXPIRE_DATE);
             //秘钥及加密算法
-            Algorithm algorithm = Algorithm.HMAC256(Constant.PRIVATE_SIGN);
+            Algorithm algorithm = Algorithm.HMAC256(PRIVATE_SIGN);
             //设置头部信息
             Map<String, Object> header = new HashMap<>();
             header.put("typ", "JWT");
@@ -43,9 +45,9 @@ public class JWTUtil {
     public static boolean checkTokenWrong(String token) {
 
         try {
-            Algorithm algorithm = Algorithm.HMAC256(Constant.PRIVATE_SIGN);
+            Algorithm algorithm = Algorithm.HMAC256(PRIVATE_SIGN);
             JWTVerifier verifier = JWT.require(algorithm).build();
-            DecodedJWT jwt = verifier.verify(token);
+            verifier.verify(token);
             return false;
         } catch (Exception e) {
             e.printStackTrace();

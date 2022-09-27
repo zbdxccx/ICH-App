@@ -1,0 +1,17 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.contest.ichapp.mapper.HistoryMapper">
+    <resultMap id="BaseResultMap" type="com.contest.ichapp.pojo.domain.History">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="collection_id" jdbcType="VARCHAR" property="collectionId"/>
+    </resultMap>
+    <insert id="insertOne">
+        insert into history (collection_id, user_id)
+        values (#{collectionId}, #{userId})
+    </insert>
+    <select id="selectAllById" resultType="com.contest.ichapp.pojo.domain.History">
+        select *
+        from history
+        where user_id = #{userId}
+        order by id desc
+    </select>
+</mapper>

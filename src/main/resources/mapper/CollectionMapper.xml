@@ -42,5 +42,9 @@
                  left join dynasty d on d.id = co.dynasty_id
         where co.id = #{collectionId} limit 1
     </select>
+    <select id="selectCountAll" resultType="java.lang.Integer">
+        select count(*)
+        from collection
+    </select>
 
 </mapper>

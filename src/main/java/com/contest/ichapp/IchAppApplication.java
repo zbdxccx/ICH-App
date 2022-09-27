@@ -14,5 +14,4 @@ public class IchAppApplication {
     public static void main(String[] args) {
         SpringApplication.run(IchAppApplication.class, args);
     }
-
 }

@@ -8,6 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 public interface CollectService {
     CommonResult<String> collect(CollectParam collectParam, HttpServletRequest request);
 
-    CommonResult<String> cancel(CollectParam collectParam,HttpServletRequest request);
+    CommonResult<String> cancel(CollectParam collectParam, HttpServletRequest request);
 
 }
