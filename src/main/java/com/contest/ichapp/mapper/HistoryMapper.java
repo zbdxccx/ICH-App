@@ -1,6 +1,6 @@
 package com.contest.ichapp.mapper;
 
-import com.contest.ichapp.pojo.domain.History;
+import com.contest.ichapp.pojo.dto.param.HistoryParam;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -9,5 +9,5 @@ import java.util.List;
 public interface HistoryMapper {
     Integer insertOne(Integer collectionId, Integer userId);
 
-    List<History> selectAllById(Integer userId);
+    List<HistoryParam> selectAllById(Integer userId);
 }

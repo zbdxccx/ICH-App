@@ -32,7 +32,8 @@ public class RecommendServiceImpl implements RecommendService {
         log.info(String.valueOf(id));
         Collection collection = collectionMapper.selectById(id);
         String img = collection.getImg();
-        RecommendParam param = new RecommendParam(img, collection.getName(), collection.getDescription());
+        Integer collectionId = collection.getId();
+        RecommendParam param = new RecommendParam(collectionId, img, collection.getName(), collection.getDescription());
         return CommonResult.success(param);
     }
 

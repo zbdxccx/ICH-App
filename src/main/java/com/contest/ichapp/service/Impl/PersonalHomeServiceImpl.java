@@ -3,8 +3,8 @@ package com.contest.ichapp.service.Impl;
 import com.contest.ichapp.mapper.HistoryMapper;
 import com.contest.ichapp.mapper.LoveMapper;
 import com.contest.ichapp.pojo.domain.Collection;
-import com.contest.ichapp.pojo.domain.History;
 import com.contest.ichapp.pojo.dto.CommonResult;
+import com.contest.ichapp.pojo.dto.param.HistoryParam;
 import com.contest.ichapp.pojo.dto.result.CollectionResult;
 import com.contest.ichapp.pojo.dto.result.HistoryResult;
 import com.contest.ichapp.service.PersonalHomeService;
@@ -26,7 +26,6 @@ public class PersonalHomeServiceImpl implements PersonalHomeService {
     public CommonResult<CollectionResult> getAllCollection(HttpServletRequest request) {
         String token = JWTUtil.getToken(request);
         Integer userId = JWTUtil.getUserId(token);
-
         List<Collection> collections = loveMapper.selectByUserId(userId);
 
         return CommonResult.success(new CollectionResult(collections, collections.size()));
@@ -36,7 +35,7 @@ public class PersonalHomeServiceImpl implements PersonalHomeService {
     public CommonResult<HistoryResult> getAllHistory(HttpServletRequest request) {
         String token = JWTUtil.getToken(request);
         Integer userId = JWTUtil.getUserId(token);
-        List<History> histories = historyMapper.selectAllById(userId);
+        List<HistoryParam> histories = historyMapper.selectAllById(userId);
 
         return CommonResult.success(new HistoryResult(histories));
     }

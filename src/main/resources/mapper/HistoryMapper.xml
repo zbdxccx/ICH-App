@@ -8,10 +8,15 @@
         insert into history (collection_id, user_id)
         values (#{collectionId}, #{userId})
     </insert>
-    <select id="selectAllById" resultType="com.contest.ichapp.pojo.domain.History">
-        select *
-        from history
-        where user_id = #{userId}
+    <select id="selectAllById" resultType="com.contest.ichapp.pojo.dto.param.HistoryParam">
+        select h.id            as id,
+               h.collection_id as collectionId,
+               c.name          as `name`,
+               c.description   as description,
+               c.img_url       as img
+        from history h
+                 left join collection c on h.collection_id = c.id
+        where h.user_id = #{userId}
         order by id desc
     </select>
 </mapper>
