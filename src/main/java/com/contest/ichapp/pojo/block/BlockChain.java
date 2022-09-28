@@ -1,61 +1,76 @@
 package com.contest.ichapp.pojo.block;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-import java.security.MessageDigest;
+import com.alibaba.fastjson.JSON;
+
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Objects;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-@Data
-@AllArgsConstructor
 public class BlockChain {
-    //区块链
-    List<BlockChain> blockchain = new ArrayList<>();
-    //哈希值，判断挖矿成功与否
-    private String hash;
-    //前块哈希值，便于之后验证成功与否
-    private String previousHash;
-    //所需存储数据
-    private String data;
-    //时间戳
-    private long timeStamp;
-    //用于判断”挖矿“成功的密码学数字
-    private int nonce;
+    public static ArrayList<Block> blockChain = new ArrayList<>();
+    /**
+     * 用于记录所有有效的UTXO，键是String类型的TransactionOutputId
+     */
+    public static HashMap<String, TransactionOutput> UTXOs = new HashMap<>();
+    /**
+     * 初始交易（创建区块链时初始化第一笔交易）
+     */
+    public static Transaction genesisTransaction;
 
-    //构析方法，得到所需信息
-    public BlockChain(String data, String previousHash, long timeStamp) {
-        this.data = data;
-        this.previousHash = previousHash;
-        this.timeStamp = timeStamp;
-        this.hash = calculateBlockHash();
+    /**
+     * 检查区块链的有效性
+     */
+    public boolean isChainValid() {
+        Block curBlock;
+        Block prevBlock;
+
+        //遍历blockchain，从1开始，保证prevBlock的有效性
+        for (int i = 1; i < blockChain.size(); i++) {
+            curBlock = blockChain.get(i);
+            prevBlock = blockChain.get(i - 1);
+
+            try {
+                //检查hash值计算有效性
+                if (!curBlock.hash.equals(curBlock.calculateHash())) {
+                    System.out.println("block的hash值计算错误");
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //检查hash值前后对应关系正确性
+            if (!prevBlock.hash.equals(curBlock.prevHash)) {
+                System.out.println("当前block与前面block的hash值不对应");
+                return false;
+            }
+
+            for (int t = 0; i < curBlock.transactions.size(); t++) {
+                Transaction currentTransaction = curBlock.transactions.get(t);
+
+
+                if (!Objects.equals(currentTransaction.outputs.get(0).recipient, currentTransaction.recipient)) {
+                    System.out.println("第" + t + "个交易的交易输出目的方错误！");
+                    return false;
+                }
+            }
+        }
+        System.out.println("区块链有效！");
+        return true;
     }
 
-    private String calculateBlockHash() {
-        //生成独属的字符串，方便之后转换
-        String dataToHash = previousHash + timeStamp + nonce + data;
-        MessageDigest digest;
-        byte[] bytes = null;
-        try {
-            //创建一个提供信息摘要算法的对象，初始化为SHA-256算法对象
-            digest = MessageDigest.getInstance("SHA-256");
-            //用对象调用，信息摘要计算方法，计算后获得字节数组
-            //dataToHash.getBytes(UTF_8)，将字符串转换为字节数组
-            bytes = digest.digest(dataToHash.getBytes(UTF_8));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //用缓存字符串
-        StringBuffer buffer = new StringBuffer();
-        for (byte b : bytes) {
-            //延伸字符串
-            //String.format("%02x", b)，以十六进制输出,2为指定的输出字段的宽度.如果位数小于2,则左端补0
-            buffer.append(String.format("%02x", b));
-        }
-        //返回字符串
-        return buffer.toString();
+    /**
+     * 向区块链中添加块
+     */
+    public void addBlock(Block newBlock) {
+        blockChain.add(newBlock);
+    }
+
+    /**
+     * 将blockChain转换为json字符串本地存储
+     */
+    public String toJson() {
+        return JSON.toJSONString(blockChain);
     }
 }
-

@@ -5,12 +5,10 @@ import com.contest.ichapp.pojo.dto.param.RecommendDateParam;
 import com.contest.ichapp.pojo.dto.param.RecommendParam;
 import com.contest.ichapp.service.RecommendService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin
 public class RecommendController {
     private final RecommendService recommendService;
 
