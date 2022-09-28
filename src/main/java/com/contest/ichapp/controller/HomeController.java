@@ -6,6 +6,7 @@ import com.contest.ichapp.pojo.dto.vo.MoreInfoVo;
 import com.contest.ichapp.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @Validated
+@CrossOrigin
 @RestController
 public class HomeController {
 
