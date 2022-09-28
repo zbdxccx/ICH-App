@@ -24,10 +24,6 @@ public class Transaction {
      */
     public String recipient;
     /**
-     * 交易物id
-     */
-    public int collectionId;
-    /**
      * 本次交易所涉及到的所有交易输入
      */
     public ArrayList<TransactionInput> inputs;
@@ -36,10 +32,9 @@ public class Transaction {
      */
     public ArrayList<TransactionOutput> outputs = new ArrayList<>();
 
-    public Transaction(String from, String to, int collectionId, ArrayList<TransactionInput> inputs) {
+    public Transaction(String from, String to, ArrayList<TransactionInput> inputs) {
         this.sender = from;
         this.recipient = to;
-        this.collectionId = collectionId;
         this.inputs = inputs;
     }
 

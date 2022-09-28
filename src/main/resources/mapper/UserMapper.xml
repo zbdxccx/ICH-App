@@ -24,7 +24,12 @@
     <select id="selectUserIdByUsername" resultType="java.lang.Integer">
         select id
         from `user`
-        where username =#{username,jdbcType=VARCHAR} limit 1
+        where username = #{username,jdbcType=VARCHAR} limit 1
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select *
+        from user
+        where id = #{userId} limit 1
     </select>
 
 </mapper>

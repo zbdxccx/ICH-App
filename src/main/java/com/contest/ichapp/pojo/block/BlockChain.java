@@ -2,11 +2,13 @@ package com.contest.ichapp.pojo.block;
 
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+@Slf4j
 public class BlockChain {
     public static ArrayList<Block> blockChain = new ArrayList<>();
     /**
@@ -33,7 +35,7 @@ public class BlockChain {
             try {
                 //检查hash值计算有效性
                 if (!curBlock.hash.equals(curBlock.calculateHash())) {
-                    System.out.println("block的hash值计算错误");
+                    log.info("block的hash值计算错误");
                     return false;
                 }
             } catch (Exception e) {
@@ -42,7 +44,7 @@ public class BlockChain {
 
             //检查hash值前后对应关系正确性
             if (!prevBlock.hash.equals(curBlock.prevHash)) {
-                System.out.println("当前block与前面block的hash值不对应");
+                log.info("当前block与前面block的hash值不对应");
                 return false;
             }
 
@@ -51,12 +53,12 @@ public class BlockChain {
 
 
                 if (!Objects.equals(currentTransaction.outputs.get(0).recipient, currentTransaction.recipient)) {
-                    System.out.println("第" + t + "个交易的交易输出目的方错误！");
+                    log.info("第" + t + "个交易的交易输出目的方错误！");
                     return false;
                 }
             }
         }
-        System.out.println("区块链有效！");
+        log.info("区块链有效！");
         return true;
     }
 

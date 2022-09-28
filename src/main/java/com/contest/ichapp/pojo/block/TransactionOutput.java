@@ -22,9 +22,8 @@ public class TransactionOutput {
     public String parentTransactionId;
 
 
-    public TransactionOutput(String recipient, float value, String parentTransactionId) {
+    public TransactionOutput(String recipient, String parentTransactionId) {
         this.recipient = recipient;
-        this.value = value;
         this.parentTransactionId = parentTransactionId;
         //前面属性均赋值后再计算id
     }

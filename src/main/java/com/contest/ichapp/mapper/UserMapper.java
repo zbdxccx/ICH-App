@@ -1,5 +1,6 @@
 package com.contest.ichapp.mapper;
 
+import com.contest.ichapp.pojo.domain.User;
 import com.contest.ichapp.pojo.dto.vo.UserCheckVo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,5 +13,7 @@ public interface UserMapper {
     Integer selectUserIdByUsername(String username);
 
     Integer insertByParam(String username, String password);
+
+    User selectById(Integer userId);
 
 }

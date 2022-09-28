@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.contest.ichapp.mapper.TransInfoMapper">
+    <resultMap id="BaseResultMap" type="com.contest.ichapp.pojo.domain.TransInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="collection_id" jdbcType="VARCHAR" property="collectionId"/>
+        <result column="transaction_id" jdbcType="VARCHAR" property="transactionId"/>
+        <result column="transaction_block" jdbcType="VARCHAR" property="transactionBlock"/>
+    </resultMap>
+    <update id="updateAll">
+        update trans_info
+        set transaction_block = #{transBlock},
+            user_id           =#{userId}
+        where collection_id = #{collectionId}
+          and transaction_id = #{transId}
+    </update>
+
+    <select id="selectById" resultType="com.contest.ichapp.pojo.domain.TransInfo">
+        select *
+        from trans_info
+        where transaction_id = #{transId} limit 1
+    </select>
+</mapper>

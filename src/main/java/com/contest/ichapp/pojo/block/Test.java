@@ -17,11 +17,11 @@ public class Test {
         //创建初始交易
         //最初的交易的value从coinbase凭空出现
         System.out.println("第一次交易：coinbase向wallet转移物品X");
-        BlockChain.genesisTransaction = new Transaction(coinBase.publicKey, wallet.publicKey, 1, null);
+        BlockChain.genesisTransaction = new Transaction(coinBase.publicKey, wallet.publicKey, null);
         //初始交易id设为0
         BlockChain.genesisTransaction.transactionId = "0";
         //因为初始交易是凭空生成，与普通交易不同，所以很多参数需要手动设置
-        BlockChain.genesisTransaction.outputs.add(new TransactionOutput(BlockChain.genesisTransaction.recipient, BlockChain.genesisTransaction.collectionId, BlockChain.genesisTransaction.transactionId));
+        BlockChain.genesisTransaction.outputs.add(new TransactionOutput(BlockChain.genesisTransaction.recipient, BlockChain.genesisTransaction.transactionId));
         //将本次交易输出添加到UTXOs
         BlockChain.UTXOs.put(BlockChain.genesisTransaction.outputs.get(0).id, BlockChain.genesisTransaction.outputs.get(0));
         //前面的哈希值为手动设为0

@@ -2,6 +2,7 @@ package com.contest.ichapp.pojo.block;
 
 import com.contest.ichapp.util.CryptoUtil.StringUtil;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Date;
  * @author Steadon
  */
 @Data
+@Slf4j
 public class Block implements Serializable {
     public String hash;
     public String prevHash;
@@ -48,12 +50,12 @@ public class Block implements Serializable {
         if (transaction == null) return;
         if (!prevHash.equals("0")) {
             if (!transaction.processTransaction()) {
-                System.out.println("交易处理失败！");
+                log.info("交易处理失败！");
                 return;
             }
         }
         //将交易记录添加到区块中
         transactions.add(transaction);
-        System.out.println("交易成功添加到Block中！");
+        log.info("交易成功添加到Block中！");
     }
 }
