@@ -8,4 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface TransBlockService {
     CommonResult<BlockChain> transOne(HttpServletRequest request, TransParam transParam);
+
+    CommonResult decode(HttpServletRequest request);
 }

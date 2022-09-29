@@ -1,8 +1,11 @@
 package com.contest.ichapp.service.Impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.contest.ichapp.mapper.TransInfoMapper;
 import com.contest.ichapp.mapper.UserMapper;
 import com.contest.ichapp.pojo.block.*;
+import com.contest.ichapp.pojo.domain.TransInfo;
 import com.contest.ichapp.pojo.domain.User;
 import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.TransParam;
@@ -53,4 +56,13 @@ public class TransBlockServiceImpl implements TransBlockService {
         transInfoMapper.updateAll(transParam.getCollectionId(), recipientId, transParam.getTransId(), chain.toJson());
         return CommonResult.success("交易成功");
     }
+
+    @Override
+    public CommonResult decode(HttpServletRequest request) {
+        TransInfo transInfo = transInfoMapper.selectById("1");
+        String transactionBlock = transInfo.getTransactionBlock();
+        JSONArray jsonObject = JSONObject.parseArray(transactionBlock);
+        return CommonResult.success(jsonObject);
+    }
+
 }

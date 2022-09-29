@@ -10,4 +10,6 @@ public class InfoParam {
     private String name;
     private String location;
     private String img;
+    private Integer height;
+    private Integer width;
 }

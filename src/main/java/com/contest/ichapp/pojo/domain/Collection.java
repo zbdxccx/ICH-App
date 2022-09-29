@@ -11,4 +11,5 @@ public class Collection {
     private Integer museumId;
     private String location;
     private String img;
+    private String fullImg;
 }

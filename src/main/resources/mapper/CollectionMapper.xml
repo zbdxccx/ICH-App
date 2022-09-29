@@ -8,6 +8,7 @@
         <result column="museum_id" jdbcType="VARCHAR" property="museumId"/>
         <result column="location" jdbcType="VARCHAR" property="location"/>
         <result column="img_url" jdbcType="VARCHAR" property="img"/>
+        <result column="full_img_url" jdbcType="VARCHAR" property="fullImg"/>
     </resultMap>
     <select id="selectById" resultMap="BaseResultMap">
         select *

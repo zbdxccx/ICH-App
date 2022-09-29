@@ -12,7 +12,11 @@ import com.contest.ichapp.util.JWTUtil.JWTUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +41,17 @@ public class HomeServiceImpl implements HomeService {
             Integer id = collection.getId();
             String name = collection.getName();
             String location = collection.getLocation();
-            String img = collection.getImg();
-            InfoParam param = new InfoParam(id, name, location, img);
+            String img = collection.getFullImg();
+            BufferedImage sourceImg;
+            try {
+                sourceImg = ImageIO.read(new URL(img).openStream());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            int width = sourceImg.getWidth();
+            int height = sourceImg.getHeight();
+            InfoParam param = new InfoParam(id, name, location, img, height, width);
             params.add(param);
         }
         InfoResult result = new InfoResult(params);
