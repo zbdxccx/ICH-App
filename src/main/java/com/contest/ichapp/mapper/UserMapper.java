@@ -6,13 +6,13 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserMapper {
-    UserCheckVo selectToCheck(String username, String password);
+    UserCheckVo selectToCheck(String username);
 
     UserCheckVo selectToDistinct(String username);
 
     Integer selectUserIdByUsername(String username);
 
-    Integer insertByParam(String username, String password);
+    Integer insertByParam(String username);
 
     User selectById(Integer userId);
 

@@ -9,7 +9,5 @@ import javax.servlet.http.HttpServletResponse;
 public interface LoginService {
     CommonResult<String> login(LoginParam param, HttpServletResponse response);
 
-    CommonResult<String> register(LoginParam param);
-
     CommonResult<String> sendMessage(PhoneParam param);
 }

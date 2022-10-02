@@ -31,11 +31,6 @@ public class LoginController {
         return loginService.login(param, response);
     }
 
-    @PostMapping("/register")
-    public CommonResult<String> register(@RequestBody @Valid LoginParam param) {
-        return loginService.register(param);
-    }
-
     @PostMapping("/send")
     public CommonResult<String> sendMessage(@RequestBody @Valid PhoneParam param) {
         return loginService.sendMessage(param);

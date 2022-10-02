@@ -9,6 +9,7 @@ import com.contest.ichapp.service.LoginService;
 import com.contest.ichapp.service.cacheService.CacheService;
 import com.contest.ichapp.util.JWTUtil.JWTUtil;
 import com.contest.ichapp.util.SendMessageUtil.SendMessageUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @Service
+@Slf4j
 public class LoginServiceImpl implements LoginService {
     @Resource
     private UserMapper userMapper;
@@ -30,38 +32,31 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public CommonResult<String> login(LoginParam param, HttpServletResponse response) {
         String phoneNum = param.getPhoneNum();
-        String password = param.getPassword();
         //校验验证码
-//        if (!checkVerificationCode(param)) return CommonResult.fail("验证码错误");
+        if (!checkVerificationCode(param)) return CommonResult.fail("验证码错误");
+        UserCheckVo userCheckVoRegister = userMapper.selectToDistinct(phoneNum);
+        if (!userCheckVoRegister.getCheck()) {
+            if (userMapper.insertByParam(phoneNum) == 0) log.info("注册失败");
+            else log.info("注册成功");
+        } else {
+            UserCheckVo userCheckVo = userMapper.selectToCheck(phoneNum);
+            //验证用户名和密码是否正确
+            if (!userCheckVo.getCheck()) return CommonResult.wrongLogin();
+        }
         Integer userId = userMapper.selectUserIdByUsername(phoneNum);
         //生成token
         String token = JWTUtil.createToken(userId);
         Cookie cookie = new Cookie("token", token);
         response.addCookie(cookie);
-        //验证用户名和密码是否正确
-        UserCheckVo userCheckVo = userMapper.selectToCheck(phoneNum, password);
-        if (!userCheckVo.getCheck()) return CommonResult.wrongLogin();
         return CommonResult.success("登录成功");
-    }
-
-    @Override
-    public CommonResult<String> register(LoginParam param) {
-        String phoneNum = param.getPhoneNum();
-        //校验验证码
-        if (!checkVerificationCode(param)) return CommonResult.fail("验证码错误");
-        //验证用户名是否已被使用
-        UserCheckVo userCheckVo = userMapper.selectToDistinct(phoneNum);
-        if (userCheckVo.getCheck()) return CommonResult.distinct();
-        String password = param.getPassword();
-        //存入数据库
-        if (userMapper.insertByParam(phoneNum, password) == 0) return CommonResult.fail("注册失败");
-        return CommonResult.success("注册成功");
     }
 
     @Override
     public CommonResult<String> sendMessage(PhoneParam param) {
         String verificationCode = cacheService.updateVerificationCode(param.getPhoneNum());
-        Integer type = param.getType();
+        int type;
+        if (userMapper.selectUserIdByUsername(param.getPhoneNum()) == null) type = 2;
+        else type = 1;
         String typeMessage = null;
         if (type == 1) typeMessage = "登录";
         if (type == 2) typeMessage = "注册";

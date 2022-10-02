@@ -7,19 +7,18 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
     </resultMap>
     <insert id="insertByParam">
-        insert into user (username, password)
-        values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
+        insert into user (username)
+        values (#{username,jdbcType=VARCHAR})
     </insert>
     <select id="selectToCheck" resultType="com.contest.ichapp.pojo.dto.vo.UserCheckVo">
         select count(*) as `check`
         from `user`
-        where username = #{username,jdbcType=VARCHAR}
-          and `password` = #{password,jdbcType=VARCHAR} LIMIT 1
+        where username = #{username,jdbcType=VARCHAR} limit 1
     </select>
     <select id="selectToDistinct" resultType="com.contest.ichapp.pojo.dto.vo.UserCheckVo">
         select count(*) as `check`
         from `user`
-        where username = #{username,jdbcType=VARCHAR} LIMIT 1
+        where username = #{username,jdbcType=VARCHAR} limit 1
     </select>
     <select id="selectUserIdByUsername" resultType="java.lang.Integer">
         select id
