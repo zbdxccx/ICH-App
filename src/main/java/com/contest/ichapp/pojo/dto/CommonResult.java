@@ -44,6 +44,7 @@ public class CommonResult<T> {
         return new CommonResult<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMessage(), data);
     }
 
+
     /**
      * 请求失败
      */
@@ -77,5 +78,9 @@ public class CommonResult<T> {
 
     public static <T> CommonResult<T> tokenNull() {
         return new CommonResult<>(ResultEnum.TOKEN_NULL.getCode(), ResultEnum.TOKEN_NULL.getMessage(), null);
+    }
+
+    public static <T> CommonResult<T> checkSuccess(T data) {
+        return new CommonResult<>(ResultEnum.CHECK_SUCCEED.getCode(), ResultEnum.CHECK_SUCCEED.getMessage(), data);
     }
 }

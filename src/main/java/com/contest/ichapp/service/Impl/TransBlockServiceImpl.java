@@ -48,7 +48,7 @@ public class TransBlockServiceImpl implements TransBlockService {
     public CommonResult<String> transOne(HttpServletRequest request, TransParam transParam) {
         String token = JWTUtil.getToken(request);
         Integer userId = JWTUtil.getUserId(token);
-        Integer receiverId = transParam.getReceiverId();
+        String receiver = transParam.getReceiver();
         Integer collectionId = transParam.getCollectionId();
         String transId = transParam.getTransId();
         if (transInfoMapper.countForConfirm(transId, userId) != 1) return CommonResult.fail("当前用户无此藏品");
@@ -57,6 +57,7 @@ public class TransBlockServiceImpl implements TransBlockService {
         log.info("开始交易");
         Date date = new Date();
         log.info("生成事务");
+        Integer receiverId = userMapper.selectUserIdByUsername(receiver);
         Transaction transaction = new Transaction();
         transaction.receiverId = receiverId;
         transaction.collectionId = collectionId;
@@ -105,8 +106,8 @@ public class TransBlockServiceImpl implements TransBlockService {
         more.receiver = userMapper.selectById(lastTransaction.receiverId).getUsername();
         more.sender = userMapper.selectById(lastTransaction.senderId).getUsername();
         //封装
-        CheckBlockParam checkParam = new CheckBlockParam(museumName, more, chain.size(), lastTransaction);
-        return CommonResult.success(checkParam);
+        CheckBlockParam checkParam = new CheckBlockParam(museumName, more, chain.size(), lastTransaction, transId);
+        return CommonResult.checkSuccess(checkParam);
     }
 
     @Override

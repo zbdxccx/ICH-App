@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class TransParam {
     private Integer collectionId;
-    private Integer receiverId;
+        private String receiver;
     private String transId;
 }

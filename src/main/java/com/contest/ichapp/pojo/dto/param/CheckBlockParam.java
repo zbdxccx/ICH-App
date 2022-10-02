@@ -8,13 +8,15 @@ import lombok.Data;
 public class CheckBlockParam {
     private String museum;
     private String checkId;
+    private String transId;
     private Integer transNum;
     private TransactionMore LastTransaction;
 
-    public CheckBlockParam(String museum, TransactionMore transactionMore, Integer transNum, Transaction transaction) {
+    public CheckBlockParam(String museum, TransactionMore transactionMore, Integer transNum, Transaction transaction, String tansId) {
         this.LastTransaction = transactionMore;
         this.museum = museum;
         this.transNum = transNum;
         this.checkId = transaction.collectionId + transaction.timeNum + transNum;
+        this.transId = tansId;
     }
 }

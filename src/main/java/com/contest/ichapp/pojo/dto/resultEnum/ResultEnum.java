@@ -10,7 +10,8 @@ public enum ResultEnum {
     WRONG_LOGIN("B0502", "用户名或密码错误"),
     DISTINCT("C0500", "该用户名已被注册"),
     TOKEN_WRONG("D0400", "token过期"),
-    TOKEN_NULL("D0500", "token不存在");
+    TOKEN_NULL("D0500", "token不存在"),
+    CHECK_SUCCEED("00000", "藏品为官方正品");
 
     private final String code;
     private final String message;
