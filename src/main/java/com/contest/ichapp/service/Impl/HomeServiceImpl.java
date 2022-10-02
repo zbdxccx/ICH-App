@@ -28,13 +28,15 @@ public class HomeServiceImpl implements HomeService {
     HistoryMapper historyMapper;
 
     @Override
-    public CommonResult<InfoResult> getAllInfo(String keyword) {
+    public CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum) {
 
         List<Collection> collections;
-        if ("all".equals(keyword)) collections = collectionMapper.selectAll();
-        else collections = collectionMapper.selectAllLike(keyword);
+        if ("all".equals(keyword)) collections = collectionMapper.selectAll((pageNum - 1) * 10);
+        else collections = collectionMapper.selectAllLike(keyword, (pageNum - 1) * 10);
 
         if (collections.isEmpty()) return CommonResult.fail("无相关数据");
+        //分页n*10
+//        List<Collection> collectionList = collections.stream().skip((pageNum - 1) * 10L).limit(10).collect(Collectors.toList());
 
         List<InfoParam> params = new ArrayList<>();
         for (Collection collection : collections) {
@@ -48,7 +50,6 @@ public class HomeServiceImpl implements HomeService {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
             int width = sourceImg.getWidth();
             int height = sourceImg.getHeight();
             InfoParam param = new InfoParam(id, name, location, img, height, width);

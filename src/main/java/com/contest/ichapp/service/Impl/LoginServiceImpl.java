@@ -32,7 +32,7 @@ public class LoginServiceImpl implements LoginService {
         String phoneNum = param.getPhoneNum();
         String password = param.getPassword();
         //校验验证码
-        if (!checkVerificationCode(param)) return CommonResult.fail("验证码错误");
+//        if (!checkVerificationCode(param)) return CommonResult.fail("验证码错误");
         Integer userId = userMapper.selectUserIdByUsername(phoneNum);
         //生成token
         String token = JWTUtil.createToken(userId);

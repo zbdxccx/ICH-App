@@ -17,7 +17,7 @@
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select *
-        from collection
+        from collection limit #{pageNum},10
     </select>
     <select id="selectAllLike" resultMap="BaseResultMap">
         select *
@@ -27,7 +27,7 @@
         where co.name like concat('%', #{keyword}, '%')
            or co.location like concat('%', #{keyword}, '%')
            or t.name like concat('%', #{keyword}, '%')
-           or m.name like concat('%', #{keyword}, '%')
+           or m.name like concat('%', #{keyword}, '%') limit #{pageNum},10
     </select>
     <select id="selectAllInfoById" resultType="com.contest.ichapp.pojo.dto.vo.MoreInfoVo">
         select co.name    as `name`,

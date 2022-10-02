@@ -9,10 +9,12 @@ import java.util.List;
 @Mapper
 public interface CollectionMapper {
     Collection selectById(Integer id);
+
     MoreInfoVo selectAllInfoById(Integer id);
 
-    List<Collection> selectAll();
+    List<Collection> selectAll(Integer pageNum);
+
     Integer selectCountAll();
 
-    List<Collection> selectAllLike(String keyword);
+    List<Collection> selectAllLike(String keyword, Integer pageNum);
 }

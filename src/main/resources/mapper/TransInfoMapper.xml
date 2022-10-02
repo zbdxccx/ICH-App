@@ -7,17 +7,28 @@
         <result column="transaction_id" jdbcType="VARCHAR" property="transactionId"/>
         <result column="transaction_block" jdbcType="VARCHAR" property="transactionBlock"/>
     </resultMap>
-    <update id="updateAll">
+    <update id="updateUser">
         update trans_info
-        set transaction_block = #{transBlock},
-            user_id           =#{userId}
+        set user_id =#{userId}
         where collection_id = #{collectionId}
           and transaction_id = #{transId}
     </update>
-
     <select id="selectById" resultType="com.contest.ichapp.pojo.domain.TransInfo">
         select *
         from trans_info
         where transaction_id = #{transId} limit 1
+    </select>
+    <select id="countForConfirm" resultType="java.lang.Integer">
+        select count(*)
+        from trans_info
+        where transaction_id = #{transId}
+          and user_id = #{userId} limit 1
+    </select>
+    <select id="selectByUserId" resultType="com.contest.ichapp.pojo.dto.param.AllBlockParam">
+        select t.transaction_id as transId,
+               co.name          as `name`
+        from trans_info t
+                 left join collection co on t.collection_id = co.id
+        where user_id = #{userId}
     </select>
 </mapper>
