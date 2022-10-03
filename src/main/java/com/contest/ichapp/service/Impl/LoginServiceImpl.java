@@ -8,14 +8,12 @@ import com.contest.ichapp.pojo.dto.vo.UserCheckVo;
 import com.contest.ichapp.service.LoginService;
 import com.contest.ichapp.service.cacheService.CacheService;
 import com.contest.ichapp.util.JWTUtil.JWTUtil;
-import com.contest.ichapp.util.SendMessageUtil.SendMessageUtil;
+import com.contest.ichapp.util.sendMessageUtil.SendMessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 @Service
 @Slf4j
@@ -30,10 +28,10 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public CommonResult<String> login(LoginParam param, HttpServletResponse response) {
+    public CommonResult<String> login(LoginParam param) {
         String phoneNum = param.getPhoneNum();
         //校验验证码
-        if (!checkVerificationCode(param)) return CommonResult.fail("验证码错误");
+//        if (!checkVerificationCode(param)) return CommonResult.fail("验证码错误");
         UserCheckVo userCheckVoRegister = userMapper.selectToDistinct(phoneNum);
         if (!userCheckVoRegister.getCheck()) {
             if (userMapper.insertByParam(phoneNum) == 0) log.info("注册失败");
@@ -46,9 +44,7 @@ public class LoginServiceImpl implements LoginService {
         Integer userId = userMapper.selectUserIdByUsername(phoneNum);
         //生成token
         String token = JWTUtil.createToken(userId);
-        Cookie cookie = new Cookie("token", token);
-        response.addCookie(cookie);
-        return CommonResult.success("登录成功");
+        return CommonResult.success("登录成功", token);
     }
 
     @Override

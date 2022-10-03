@@ -58,6 +58,8 @@ public class RedisCacheManagerConfig {
         Map<String, RedisCacheConfiguration> redisCacheConfigurationMap = new HashMap<>();
         redisCacheConfigurationMap.put("code", this.getRedisCacheConfigurationWithTtl(5));
         redisCacheConfigurationMap.put("tag", this.getRedisCacheConfigurationWithTtl(10));
+        redisCacheConfigurationMap.put("collection", this.getRedisCacheConfigurationWithTtl(10));
+        redisCacheConfigurationMap.put("collectionLike", this.getRedisCacheConfigurationWithTtl(10));
         return redisCacheConfigurationMap;
     }
 

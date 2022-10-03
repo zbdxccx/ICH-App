@@ -4,10 +4,12 @@ import com.contest.ichapp.pojo.dto.resultEnum.ResultEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
+@NoArgsConstructor
 public class CommonResult<T> {
 
     /**
@@ -31,6 +33,10 @@ public class CommonResult<T> {
      */
     public static <T> CommonResult<T> success(String message) {
         return new CommonResult<>(ResultEnum.SUCCESS.getCode(), message, null);
+    }
+
+    public static <T> CommonResult<T> success(String message, T token) {
+        return new CommonResult<>(ResultEnum.SUCCESS.getCode(), message, token);
     }
 
     /**

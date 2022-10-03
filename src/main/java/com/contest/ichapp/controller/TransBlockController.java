@@ -1,7 +1,7 @@
 package com.contest.ichapp.controller;
 
 import com.contest.ichapp.pojo.dto.CommonResult;
-import com.contest.ichapp.pojo.dto.param.CheckBlockParam;
+import com.contest.ichapp.pojo.dto.param.CheckBlockOriginParam;
 import com.contest.ichapp.pojo.dto.param.TransParam;
 import com.contest.ichapp.pojo.dto.result.AllBlockResult;
 import com.contest.ichapp.service.TransBlockService;
@@ -26,7 +26,7 @@ public class TransBlockController {
     }
 
     @GetMapping("/info/trans/check")
-    public CommonResult<CheckBlockParam> checkBlock(HttpServletRequest request, @RequestParam String transId) {
+    public CommonResult<CheckBlockOriginParam> checkBlock(HttpServletRequest request, @RequestParam String transId) {
         return transBlockService.checkBlock(request, transId);
     }
 

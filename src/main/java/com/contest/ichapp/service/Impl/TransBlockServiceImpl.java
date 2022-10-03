@@ -8,8 +8,10 @@ import com.contest.ichapp.pojo.block.Block;
 import com.contest.ichapp.pojo.block.BlockChain;
 import com.contest.ichapp.pojo.block.Transaction;
 import com.contest.ichapp.pojo.block.TransactionMore;
+import com.contest.ichapp.pojo.domain.Collection;
 import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.AllBlockParam;
+import com.contest.ichapp.pojo.dto.param.CheckBlockOriginParam;
 import com.contest.ichapp.pojo.dto.param.CheckBlockParam;
 import com.contest.ichapp.pojo.dto.param.TransParam;
 import com.contest.ichapp.pojo.dto.result.AllBlockResult;
@@ -46,8 +48,11 @@ public class TransBlockServiceImpl implements TransBlockService {
     @Override
     @SuppressWarnings("unchecked")
     public CommonResult<String> transOne(HttpServletRequest request, TransParam transParam) {
-        String token = JWTUtil.getToken(request);
-        Integer userId = JWTUtil.getUserId(token);
+        //鉴权
+        Integer userId = JWTUtil.getUserId_X(request);
+        if (userId == -1) return CommonResult.tokenWrong();
+        if (userId == -2) return CommonResult.tokenNull();
+
         String receiver = transParam.getReceiver();
         Integer collectionId = transParam.getCollectionId();
         String transId = transParam.getTransId();
@@ -87,10 +92,20 @@ public class TransBlockServiceImpl implements TransBlockService {
 
     @Override
     @SuppressWarnings("unchecked")
-    public CommonResult<CheckBlockParam> checkBlock(HttpServletRequest request, String transId) {
+    public CommonResult<CheckBlockOriginParam> checkBlock(HttpServletRequest request, String transId) {
+        //鉴权
+        Integer userId = JWTUtil.getUserId_X(request);
+        if (userId == -1) return CommonResult.tokenWrong();
+        if (userId == -2) return CommonResult.tokenNull();
+
         ArrayList<Block> chain = (ArrayList<Block>) redisUtil.get(transId);
         BlockChain blockChain = new BlockChain();
-        if (chain == null) return CommonResult.success("该藏品未有任何转交记录");
+        if (chain == null) {
+            Collection collection = collectionMapper.selectAllInfoByTransId(transId);
+            String museum = museumMapper.selectNameById(collection.getMuseumId());
+            CheckBlockOriginParam param = new CheckBlockOriginParam(museum, "无", transId, 0);
+            return CommonResult.success("该藏品未有任何转交记录", param);
+        }
         blockChain.blockChain = chain;
         if (!blockChain.isChainValid()) {
             log.info("藏品交易有问题");
@@ -112,8 +127,11 @@ public class TransBlockServiceImpl implements TransBlockService {
 
     @Override
     public CommonResult<AllBlockResult> getCollectionBlock(HttpServletRequest request) {
-        String token = JWTUtil.getToken(request);
-        Integer userId = JWTUtil.getUserId(token);
+        //鉴权
+        Integer userId = JWTUtil.getUserId_X(request);
+        if (userId == -1) return CommonResult.tokenWrong();
+        if (userId == -2) return CommonResult.tokenNull();
+
         List<AllBlockParam> allBlockParams = transInfoMapper.selectByUserId(userId);
         if (allBlockParams.size() == 0) return CommonResult.success("未拥有任何藏品");
         AllBlockResult result = new AllBlockResult(allBlockParams, allBlockParams.size());

@@ -7,7 +7,13 @@ import java.util.List;
 
 @Mapper
 public interface HistoryMapper {
-    Integer insertOne(Integer collectionId, Integer userId);
+    Integer insertOne(Integer collectionId, Integer userId, String time, Integer count);
+
+    Integer countToUpdate(Integer collectionId, Integer userId);
+
+    Integer deleteToUpdate(Integer collectionId, Integer userId);
 
     List<HistoryParam> selectAllById(Integer userId);
+
+    Integer countNum(Integer collectionId, Integer userId);
 }

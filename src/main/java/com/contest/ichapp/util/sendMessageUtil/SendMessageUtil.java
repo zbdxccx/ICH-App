@@ -1,4 +1,4 @@
-package com.contest.ichapp.util.SendMessageUtil;
+package com.contest.ichapp.util.sendMessageUtil;
 
 import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
@@ -9,7 +9,7 @@ import com.tencentcloudapi.sms.v20210111.models.SendSmsRequest;
 import com.tencentcloudapi.sms.v20210111.models.SendSmsResponse;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.contest.ichapp.util.ConstantSmsUtil.ConstantSmsUtil.*;
+import static com.contest.ichapp.util.constantSmsUtil.ConstantSmsUtil.*;
 
 @Slf4j
 public class SendMessageUtil {

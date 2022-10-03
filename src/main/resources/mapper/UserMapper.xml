@@ -30,5 +30,9 @@
         from user
         where id = #{userId} limit 1
     </select>
+    <select id="selectAllId" resultType="java.lang.Integer">
+        select id
+        from `user`
+    </select>
 
 </mapper>

@@ -17,7 +17,8 @@
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select *
-        from collection limit #{pageNum},10
+        from collection
+        order by rand()
     </select>
     <select id="selectAllLike" resultMap="BaseResultMap">
         select *
@@ -27,16 +28,17 @@
         where co.name like concat('%', #{keyword}, '%')
            or co.location like concat('%', #{keyword}, '%')
            or t.name like concat('%', #{keyword}, '%')
-           or m.name like concat('%', #{keyword}, '%') limit #{pageNum},10
+           or m.name like concat('%', #{keyword}, '%')
+        order by rand()
     </select>
     <select id="selectAllInfoById" resultType="com.contest.ichapp.pojo.dto.vo.MoreInfoVo">
-        select co.name    as `name`,
-               t.name     as `tag`,
-               m.name     as `museum`,
-               d.name     as `dynasty`,
-               co.feature as `feature`,
-               co.more    as `more`,
-               co.img_url as `img`
+        select co.name         as `name`,
+               t.name          as `tag`,
+               m.name          as `museum`,
+               d.name          as `dynasty`,
+               co.feature      as `feature`,
+               co.more         as `more`,
+               co.full_img_url as `img`
         from ((collection co
             left join tag t on co.tag_id = t.id)
             left join museum m on co.museum_id = m.id)
@@ -46,6 +48,18 @@
     <select id="selectCountAll" resultType="java.lang.Integer">
         select count(*)
         from collection
+    </select>
+    <select id="randByTagId" resultMap="BaseResultMap">
+        select *
+        from collection
+        where tag_id = #{tagId,jdbcType=INTEGER}
+        order by rand() limit 1
+    </select>
+    <select id="selectAllInfoByTransId" resultType="com.contest.ichapp.pojo.domain.Collection">
+        select *
+        from trans_info t
+                 left join collection co on t.collection_id = co.id
+        where t.transaction_id = #{transId}
     </select>
 
 </mapper>

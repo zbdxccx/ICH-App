@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @CrossOrigin
 public class RecommendController {
@@ -20,8 +22,8 @@ public class RecommendController {
     }
 
     @GetMapping("/recommend/img")
-    public CommonResult<RecommendParam> recommend() {
-        return recommendService.recommend();
+    public CommonResult<RecommendParam> recommend(HttpServletRequest request) {
+        return recommendService.recommend(request);
     }
 
     @GetMapping("/recommend/date")

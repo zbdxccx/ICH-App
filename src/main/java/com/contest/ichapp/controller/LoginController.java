@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Validated
 @RestController
 @CrossOrigin
@@ -27,8 +25,8 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public CommonResult<String> login(@RequestBody @Valid LoginParam param, HttpServletResponse response) {
-        return loginService.login(param, response);
+    public CommonResult<String> login(@RequestBody @Valid LoginParam param) {
+        return loginService.login(param);
     }
 
     @PostMapping("/send")

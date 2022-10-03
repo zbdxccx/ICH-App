@@ -1,4 +1,4 @@
-package com.contest.ichapp.util.ImgUtil;
+package com.contest.ichapp.util.imgUtil;
 
 import lombok.Cleanup;
 import sun.misc.BASE64Encoder;

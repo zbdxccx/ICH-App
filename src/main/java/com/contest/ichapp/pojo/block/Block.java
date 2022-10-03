@@ -1,6 +1,6 @@
 package com.contest.ichapp.pojo.block;
 
-import com.contest.ichapp.util.CryptoUtil.StringUtil;
+import com.contest.ichapp.util.cryptoUtil.StringUtil;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;

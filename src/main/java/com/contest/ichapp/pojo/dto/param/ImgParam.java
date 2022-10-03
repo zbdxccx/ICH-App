@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class InfoParam {
-    private Integer id;
-    private String name;
-    private String location;
-    private String img;
+@AllArgsConstructor
+public class ImgParam implements Serializable {
     private Integer height;
     private Integer width;
 }

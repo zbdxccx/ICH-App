@@ -1,4 +1,4 @@
-package com.contest.ichapp.util.CryptoUtil;
+package com.contest.ichapp.util.cryptoUtil;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

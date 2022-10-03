@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import static com.contest.ichapp.common.Constant.PRIVATE_SIGN;
 /**
  * JWT生成及校验工具类
  */
+@Slf4j
 public class JWTUtil {
     //实现签名方法
     public static String createToken(Integer userId) {
@@ -50,8 +52,7 @@ public class JWTUtil {
             verifier.verify(token);
             return false;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Token过期");
+            log.info("Token out of date");
         }
         return true;
     }
@@ -79,6 +80,19 @@ public class JWTUtil {
                 }
             }
         }
+        if (token == null) return request.getHeader("token");
         return token;
+    }
+
+    public static Integer getUserId_X(HttpServletRequest request) {
+        String token;
+        try {
+            token = JWTUtil.getToken(request);
+            if (JWTUtil.checkTokenWrong(token)) return -1;
+            if (token == null) return -2;
+        } catch (NullPointerException e) {
+            return -2;
+        }
+        return JWTUtil.getUserId(token);
     }
 }

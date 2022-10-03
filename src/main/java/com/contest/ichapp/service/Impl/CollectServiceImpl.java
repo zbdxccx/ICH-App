@@ -17,12 +17,10 @@ public class CollectServiceImpl implements CollectService {
 
     @Override
     public CommonResult<String> collect(CollectParam collectParam, HttpServletRequest request) {
-
-        String token = JWTUtil.getToken(request);
-        if (token == null) return CommonResult.tokenNull();
-        //鉴别token
-        if (JWTUtil.checkTokenWrong(token)) return CommonResult.tokenWrong();
-        Integer userId = JWTUtil.getUserId(token);
+        //鉴权
+        Integer userId = JWTUtil.getUserId_X(request);
+        if (userId == -1) return CommonResult.tokenWrong();
+        if (userId == -2) return CommonResult.tokenNull();
 
         Integer collectionId = collectParam.getCollectionId();
         if (loveMapper.selectToCount(userId, collectionId) != 0) return CommonResult.fail("已收藏");
@@ -32,12 +30,10 @@ public class CollectServiceImpl implements CollectService {
 
     @Override
     public CommonResult<String> cancel(CollectParam collectParam, HttpServletRequest request) {
-
-        String token = JWTUtil.getToken(request);
-        if (token == null) return CommonResult.tokenNull();
-        //鉴别token
-        if (JWTUtil.checkTokenWrong(token)) return CommonResult.tokenWrong();
-        Integer userId = JWTUtil.getUserId(token);
+        //鉴权
+        Integer userId = JWTUtil.getUserId_X(request);
+        if (userId == -1) return CommonResult.tokenWrong();
+        if (userId == -2) return CommonResult.tokenNull();
 
         Integer collectionId = collectParam.getCollectionId();
         if (loveMapper.selectToCount(userId, collectionId) == 0) return CommonResult.fail("未收藏");

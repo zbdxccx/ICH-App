@@ -4,55 +4,68 @@ import com.contest.ichapp.mapper.CollectionMapper;
 import com.contest.ichapp.mapper.HistoryMapper;
 import com.contest.ichapp.pojo.domain.Collection;
 import com.contest.ichapp.pojo.dto.CommonResult;
+import com.contest.ichapp.pojo.dto.param.ImgParam;
 import com.contest.ichapp.pojo.dto.param.InfoParam;
 import com.contest.ichapp.pojo.dto.result.InfoResult;
 import com.contest.ichapp.pojo.dto.vo.MoreInfoVo;
 import com.contest.ichapp.service.HomeService;
+import com.contest.ichapp.service.cacheService.CacheService;
 import com.contest.ichapp.util.JWTUtil.JWTUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class HomeServiceImpl implements HomeService {
     @Resource
     CollectionMapper collectionMapper;
     @Resource
     HistoryMapper historyMapper;
+    private final CacheService cacheService;
+
+    @Autowired
+    public HomeServiceImpl(CacheService cacheService) {
+        this.cacheService = cacheService;
+    }
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @Override
     public CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum) {
 
         List<Collection> collections;
-        if ("all".equals(keyword)) collections = collectionMapper.selectAll((pageNum - 1) * 10);
-        else collections = collectionMapper.selectAllLike(keyword, (pageNum - 1) * 10);
+        if ("all".equals(keyword)) collections = cacheService.getAllCollection();
+        else collections = cacheService.getAllCollectionLike(keyword);
 
         if (collections.isEmpty()) return CommonResult.fail("无相关数据");
+
         //分页n*10
-//        List<Collection> collectionList = collections.stream().skip((pageNum - 1) * 10L).limit(10).collect(Collectors.toList());
+        List<Collection> collectionList = collections.stream().skip((pageNum - 1) * 10L).limit(10).collect(Collectors.toList());
 
         List<InfoParam> params = new ArrayList<>();
-        for (Collection collection : collections) {
+        for (Collection collection : collectionList) {
             Integer id = collection.getId();
             String name = collection.getName();
             String location = collection.getLocation();
             String img = collection.getFullImg();
-            BufferedImage sourceImg;
+            //缓存图片高和宽，减少io开支
+            ImgParam imgParam;
             try {
-                sourceImg = ImageIO.read(new URL(img).openStream());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                imgParam = cacheService.ioImg(img);
+            } catch (Exception e) {
+                log.info("图片为空，已跳过 [" + collection.getName() + "]");
+                continue;
             }
-            int width = sourceImg.getWidth();
-            int height = sourceImg.getHeight();
-            InfoParam param = new InfoParam(id, name, location, img, height, width);
+            InfoParam param = new InfoParam(id, name, location, img, imgParam.getHeight(), imgParam.getWidth());
             params.add(param);
         }
         InfoResult result = new InfoResult(params);
@@ -61,10 +74,19 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public CommonResult<MoreInfoVo> getMoreInfo(Integer collectionId, HttpServletRequest request) {
-        String token = JWTUtil.getToken(request);
-        Integer userId = JWTUtil.getUserId(token);
+        //鉴权
+        Integer userId = JWTUtil.getUserId_X(request);
+        if (userId == -1) return CommonResult.tokenWrong();
+        if (userId == -2) return CommonResult.tokenNull();
         //添加历史记录
-        if (historyMapper.insertOne(collectionId, userId) == 0) return CommonResult.fail("Insert failed");
+        int count = 0;
+        if (historyMapper.countToUpdate(collectionId, userId) != 0) {
+            count = historyMapper.countNum(collectionId, userId);
+            if (historyMapper.deleteToUpdate(collectionId, userId) == 0) return CommonResult.fail("delete failed");
+        }
+        if (historyMapper.insertOne(collectionId, userId, dateFormat.format(new Date().getTime()), ++count) == 0) {
+            return CommonResult.fail("Insert failed");
+        }
         MoreInfoVo collection = collectionMapper.selectAllInfoById(collectionId);
         return CommonResult.success(collection);
     }

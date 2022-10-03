@@ -9,4 +9,6 @@ public class HistoryParam {
     private String img;
     private String name;
     private String description;
+    private String time;
+    private Integer count;
 }

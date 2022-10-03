@@ -1,4 +1,4 @@
-package com.contest.ichapp.util.RandomUtil;
+package com.contest.ichapp.util.randomUtil;
 
 import java.text.DecimalFormat;
 import java.util.Random;

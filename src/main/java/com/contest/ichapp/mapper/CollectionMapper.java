@@ -10,11 +10,15 @@ import java.util.List;
 public interface CollectionMapper {
     Collection selectById(Integer id);
 
+    Collection randByTagId(Integer tagId);
+
     MoreInfoVo selectAllInfoById(Integer id);
 
-    List<Collection> selectAll(Integer pageNum);
+    Collection selectAllInfoByTransId(String transId);
+
+    List<Collection> selectAll();
 
     Integer selectCountAll();
 
-    List<Collection> selectAllLike(String keyword, Integer pageNum);
+    List<Collection> selectAllLike(String keyword);
 }

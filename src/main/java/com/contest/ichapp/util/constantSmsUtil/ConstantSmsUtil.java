@@ -1,4 +1,4 @@
-package com.contest.ichapp.util.ConstantSmsUtil;
+package com.contest.ichapp.util.constantSmsUtil;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
