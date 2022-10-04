@@ -10,9 +10,11 @@ import com.contest.ichapp.pojo.dto.param.HistoryParam;
 import com.contest.ichapp.pojo.dto.param.RecommendDateParam;
 import com.contest.ichapp.pojo.dto.param.RecommendParam;
 import com.contest.ichapp.service.RecommendService;
+import com.contest.ichapp.service.cacheService.CacheService;
 import com.contest.ichapp.util.JWTUtil.JWTUtil;
 import com.contest.ichapp.util.algorithm.AlgorithmUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,27 +32,37 @@ public class RecommendServiceImpl implements RecommendService {
     CollectionMapper collectionMapper;
     @Resource
     HistoryMapper historyMapper;
+    private final CacheService cacheService;
+
+    @Autowired
+    public RecommendServiceImpl(CacheService cacheService) {
+        this.cacheService = cacheService;
+    }
 
     @Override
     public CommonResult<RecommendParam> recommend(HttpServletRequest request) {
         //鉴权
         Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
-        //获取个人兴趣map
-        List<HistoryParam> historyParams = historyMapper.selectAllById(userId);
-        Map<Integer, Integer> map = new HashMap<>();
-        int[] integers = new int[9];
-        Arrays.fill(integers, 0);
-        for (HistoryParam history : historyParams) {
-            Integer tagId = collectionMapper.selectById(history.getCollectionId()).getTagId();
-            Integer count = history.getCount();
-            integers[tagId] += count;
-            map.put(tagId, integers[tagId]);
+        int tagId;
+        if (userId == -1 || userId == -2) {
+            log.info("未检测到登录，已随机推荐");
+            tagId = new Random().nextInt(8) + 1;
+        } else {
+            //获取个人兴趣map
+            List<HistoryParam> historyParams = historyMapper.selectAllById(userId);
+            Map<Integer, Integer> map = new HashMap<>();
+            int[] integers = new int[9];
+            Arrays.fill(integers, 0);
+            for (HistoryParam history : historyParams) {
+                int tagIdFlag = collectionMapper.selectById(history.getCollectionId()).getTagId();
+                int count = history.getCount();
+                integers[tagIdFlag] += count;
+                map.put(tagIdFlag, integers[tagIdFlag]);
+            }
+            tagId = AlgorithmUtil.recommend(map);
         }
         //根据推荐算法获取的id
-        int tagId = AlgorithmUtil.recommend(map);
-        log.info("推荐id为：" + tagId);
+        log.info("推荐tagId为：" + tagId);
         Collection collection = collectionMapper.randByTagId(tagId);
         String img = collection.getImg();
         Integer collectionId = collection.getId();
