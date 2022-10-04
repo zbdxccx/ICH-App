@@ -21,12 +21,13 @@
           and collection_id = #{collectionId,jdbcType=INTEGER} limit 1
     </select>
     <select id="selectByUserId" resultType="com.contest.ichapp.pojo.domain.Collection">
-        select c.id          as `id`,
-               c.name        as `name`,
-               c.description as `description`,
-               c.location    as `location`
+        select co.id           as `id`,
+               co.name         as `name`,
+               co.description  as `description`,
+               co.location     as `location`,
+               co.full_img_url as `fullImg`
         from love l
-                 left join collection c on l.collection_id = c.id
+                 left join collection co on l.collection_id = co.id
         where user_id = #{userId,jdbcType=INTEGER}
     </select>
 </mapper>
