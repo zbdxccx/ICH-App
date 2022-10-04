@@ -7,7 +7,7 @@ import com.contest.ichapp.pojo.dto.param.PhoneParam;
 import com.contest.ichapp.pojo.dto.vo.UserCheckVo;
 import com.contest.ichapp.service.LoginService;
 import com.contest.ichapp.service.cacheService.CacheService;
-import com.contest.ichapp.util.JWTUtil.JWTUtil;
+import com.contest.ichapp.util.jwtUtil.JWTUtil;
 import com.contest.ichapp.util.sendMessageUtil.SendMessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

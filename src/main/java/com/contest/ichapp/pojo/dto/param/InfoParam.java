@@ -14,4 +14,5 @@ public class InfoParam {
     private String img;
     private Integer height;
     private Integer width;
+    private Boolean isLove;
 }

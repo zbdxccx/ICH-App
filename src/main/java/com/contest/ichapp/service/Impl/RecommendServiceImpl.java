@@ -10,11 +10,9 @@ import com.contest.ichapp.pojo.dto.param.HistoryParam;
 import com.contest.ichapp.pojo.dto.param.RecommendDateParam;
 import com.contest.ichapp.pojo.dto.param.RecommendParam;
 import com.contest.ichapp.service.RecommendService;
-import com.contest.ichapp.service.cacheService.CacheService;
-import com.contest.ichapp.util.JWTUtil.JWTUtil;
 import com.contest.ichapp.util.algorithm.AlgorithmUtil;
+import com.contest.ichapp.util.jwtUtil.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,12 +30,6 @@ public class RecommendServiceImpl implements RecommendService {
     CollectionMapper collectionMapper;
     @Resource
     HistoryMapper historyMapper;
-    private final CacheService cacheService;
-
-    @Autowired
-    public RecommendServiceImpl(CacheService cacheService) {
-        this.cacheService = cacheService;
-    }
 
     @Override
     public CommonResult<RecommendParam> recommend(HttpServletRequest request) {

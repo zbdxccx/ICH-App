@@ -16,8 +16,8 @@ import com.contest.ichapp.pojo.dto.param.CheckBlockParam;
 import com.contest.ichapp.pojo.dto.param.TransParam;
 import com.contest.ichapp.pojo.dto.result.AllBlockResult;
 import com.contest.ichapp.service.TransBlockService;
-import com.contest.ichapp.util.JWTUtil.JWTUtil;
-import com.contest.ichapp.util.redis.RedisUtil;
+import com.contest.ichapp.util.jwtUtil.JWTUtil;
+import com.contest.ichapp.util.redisUtil.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -103,7 +103,7 @@ public class TransBlockServiceImpl implements TransBlockService {
         if (chain == null) {
             Collection collection = collectionMapper.selectAllInfoByTransId(transId);
             String museum = museumMapper.selectNameById(collection.getMuseumId());
-            CheckBlockOriginParam param = new CheckBlockOriginParam(museum, "无", transId, 0);
+            CheckBlockOriginParam param = new CheckBlockOriginParam(museum, "该藏品无交易记录", transId, 0);
             return CommonResult.success("该藏品未有任何转交记录", param);
         }
         blockChain.blockChain = chain;

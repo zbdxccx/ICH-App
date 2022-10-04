@@ -1,4 +1,4 @@
-package com.contest.ichapp.util.redis;
+package com.contest.ichapp.util.redisUtil;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;

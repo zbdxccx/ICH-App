@@ -2,6 +2,7 @@ package com.contest.ichapp.service.Impl;
 
 import com.contest.ichapp.mapper.CollectionMapper;
 import com.contest.ichapp.mapper.HistoryMapper;
+import com.contest.ichapp.mapper.LoveMapper;
 import com.contest.ichapp.pojo.domain.Collection;
 import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.ImgParam;
@@ -10,7 +11,7 @@ import com.contest.ichapp.pojo.dto.result.InfoResult;
 import com.contest.ichapp.pojo.dto.vo.MoreInfoVo;
 import com.contest.ichapp.service.HomeService;
 import com.contest.ichapp.service.cacheService.CacheService;
-import com.contest.ichapp.util.JWTUtil.JWTUtil;
+import com.contest.ichapp.util.jwtUtil.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ public class HomeServiceImpl implements HomeService {
     CollectionMapper collectionMapper;
     @Resource
     HistoryMapper historyMapper;
+    @Resource
+    LoveMapper loveMapper;
     private final CacheService cacheService;
 
     @Autowired
@@ -40,7 +43,12 @@ public class HomeServiceImpl implements HomeService {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @Override
-    public CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum) {
+    public CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum, HttpServletRequest request) {
+        boolean isLogin = false;
+        Integer userId = JWTUtil.getUserId_X(request);
+        if (userId == -1 || userId == -2) {
+            log.info("未检测到登录，无收藏状态");
+        } else isLogin = true;
 
         List<Collection> collections;
         if ("all".equals(keyword)) collections = cacheService.getAllCollection();
@@ -57,6 +65,7 @@ public class HomeServiceImpl implements HomeService {
             String name = collection.getName();
             String location = collection.getLocation();
             String img = collection.getFullImg();
+            boolean isLove = false;
             //缓存图片高和宽，减少io开支
             ImgParam imgParam;
             try {
@@ -65,7 +74,8 @@ public class HomeServiceImpl implements HomeService {
                 log.info("图片为空，已跳过 [" + collection.getName() + "]");
                 continue;
             }
-            InfoParam param = new InfoParam(id, name, location, img, imgParam.getHeight(), imgParam.getWidth());
+            if (isLogin && loveMapper.selectToCount(userId, id) != 0) isLove = true;
+            InfoParam param = new InfoParam(id, name, location, img, imgParam.getHeight(), imgParam.getWidth(), isLove);
             params.add(param);
         }
         InfoResult result = new InfoResult(params);

@@ -7,7 +7,7 @@ import com.contest.ichapp.pojo.dto.vo.MoreInfoVo;
 import javax.servlet.http.HttpServletRequest;
 
 public interface HomeService {
-    CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum);
+    CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum, HttpServletRequest request);
 
     CommonResult<MoreInfoVo> getMoreInfo(Integer collectionId, HttpServletRequest request);
 }

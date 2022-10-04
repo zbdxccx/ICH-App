@@ -9,7 +9,7 @@ import com.contest.ichapp.pojo.dto.param.HistoryParam;
 import com.contest.ichapp.pojo.dto.result.CollectionResult;
 import com.contest.ichapp.pojo.dto.result.HistoryResult;
 import com.contest.ichapp.service.PersonalHomeService;
-import com.contest.ichapp.util.JWTUtil.JWTUtil;
+import com.contest.ichapp.util.jwtUtil.JWTUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

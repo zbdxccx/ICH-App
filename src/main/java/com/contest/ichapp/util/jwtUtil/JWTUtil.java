@@ -1,4 +1,4 @@
-package com.contest.ichapp.util.JWTUtil;
+package com.contest.ichapp.util.jwtUtil;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

@@ -28,9 +28,9 @@ public class HomeController {
     }
 
     @GetMapping("/home/info/all")
-    public CommonResult<InfoResult> getAllInfo(@RequestParam(value = "keyword", required = false, defaultValue = "all") String keyword, @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+    public CommonResult<InfoResult> getAllInfo(@RequestParam(value = "keyword", required = false, defaultValue = "all") String keyword, @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum, HttpServletRequest request) {
         log.info("/home/info/all");
-        return homeService.getAllInfo(keyword, pageNum);
+        return homeService.getAllInfo(keyword, pageNum, request);
     }
 
     @GetMapping("/home/info/more")
