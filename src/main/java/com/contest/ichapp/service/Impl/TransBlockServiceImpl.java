@@ -47,7 +47,7 @@ public class TransBlockServiceImpl implements TransBlockService {
 
     @Override
     @SuppressWarnings("unchecked")
-    public CommonResult<String> transOne(HttpServletRequest request, TransParam transParam) {
+    public synchronized CommonResult<String> transOne(HttpServletRequest request, TransParam transParam) {
         //鉴权
         Integer userId = JWTUtil.getUserId_X(request);
         if (userId == -1) return CommonResult.tokenWrong();
@@ -92,7 +92,7 @@ public class TransBlockServiceImpl implements TransBlockService {
 
     @Override
     @SuppressWarnings("unchecked")
-    public CommonResult<CheckBlockOriginParam> checkBlock(HttpServletRequest request, String transId) {
+    public synchronized CommonResult<CheckBlockOriginParam> checkBlock(HttpServletRequest request, String transId) {
         //鉴权
         Integer userId = JWTUtil.getUserId_X(request);
         if (userId == -1) return CommonResult.tokenWrong();
@@ -126,7 +126,7 @@ public class TransBlockServiceImpl implements TransBlockService {
     }
 
     @Override
-    public CommonResult<AllBlockResult> getCollectionBlock(HttpServletRequest request) {
+    public synchronized CommonResult<AllBlockResult> getCollectionBlock(HttpServletRequest request) {
         //鉴权
         Integer userId = JWTUtil.getUserId_X(request);
         if (userId == -1) return CommonResult.tokenWrong();

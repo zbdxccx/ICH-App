@@ -32,7 +32,7 @@ public class RecommendServiceImpl implements RecommendService {
     HistoryMapper historyMapper;
 
     @Override
-    public CommonResult<RecommendParam> recommend(HttpServletRequest request) {
+    public synchronized CommonResult<RecommendParam> recommend(HttpServletRequest request) {
         //鉴权
         Integer userId = JWTUtil.getUserId_X(request);
         int tagId;
@@ -52,6 +52,7 @@ public class RecommendServiceImpl implements RecommendService {
                 map.put(tagIdFlag, integers[tagIdFlag]);
             }
             tagId = AlgorithmUtil.recommend(map);
+            if (tagId == 8) tagId = 1;  //TODO 其他类转瓷器类，待后续其他类完善后删除此行代码
         }
         //根据推荐算法获取的id
         log.info("推荐tagId为：" + tagId);
@@ -63,7 +64,7 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
     @Override
-    public CommonResult<RecommendDateParam> localTime() {
+    public synchronized CommonResult<RecommendDateParam> localTime() {
         DateTime dateTime = new DateTime();
 
         TimeZone timeZone = TimeZone.getTimeZone(GMT8);

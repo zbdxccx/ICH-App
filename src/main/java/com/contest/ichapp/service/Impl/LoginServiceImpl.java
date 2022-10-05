@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public CommonResult<String> login(LoginParam param) {
+    public synchronized CommonResult<String> login(LoginParam param) {
         String phoneNum = param.getPhoneNum();
         //校验验证码
 //        if (!checkVerificationCode(param)) return CommonResult.fail("验证码错误");
@@ -48,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public CommonResult<String> sendMessage(PhoneParam param) {
+    public synchronized CommonResult<String> sendMessage(PhoneParam param) {
         String verificationCode = cacheService.updateVerificationCode(param.getPhoneNum());
         int type;
         if (userMapper.selectUserIdByUsername(param.getPhoneNum()) == null) type = 2;
@@ -62,7 +62,7 @@ public class LoginServiceImpl implements LoginService {
         return CommonResult.success(typeMessage + "验证码发送成功");
     }
 
-    private Boolean checkVerificationCode(LoginParam param) {
+    private synchronized Boolean checkVerificationCode(LoginParam param) {
         String phoneNum = param.getPhoneNum();
         String verificationCode = param.getVerificationCode();
         String verificationCodeCache = cacheService.getVerificationCode(phoneNum);

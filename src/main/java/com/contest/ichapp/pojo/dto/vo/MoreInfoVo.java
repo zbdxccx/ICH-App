@@ -11,4 +11,5 @@ public class MoreInfoVo {
     private String feature;
     private String more;
     private String img;
+    private Boolean isLove;
 }

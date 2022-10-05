@@ -43,7 +43,7 @@ public class HomeServiceImpl implements HomeService {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @Override
-    public CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum, HttpServletRequest request) {
+    public synchronized CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum, HttpServletRequest request) {
         boolean isLogin = false;
         Integer userId = JWTUtil.getUserId_X(request);
         if (userId == -1 || userId == -2) {
@@ -83,13 +83,14 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    public CommonResult<MoreInfoVo> getMoreInfo(Integer collectionId, HttpServletRequest request) {
+    public synchronized CommonResult<MoreInfoVo> getMoreInfo(Integer collectionId, HttpServletRequest request) {
         //鉴权
         Integer userId = JWTUtil.getUserId_X(request);
         if (userId == -1) return CommonResult.tokenWrong();
         if (userId == -2) return CommonResult.tokenNull();
         //添加历史记录
         int count = 0;
+        boolean isLove = false;
         if (historyMapper.countToUpdate(collectionId, userId) != 0) {
             count = historyMapper.countNum(collectionId, userId);
             if (historyMapper.deleteToUpdate(collectionId, userId) == 0) return CommonResult.fail("delete failed");
@@ -98,6 +99,8 @@ public class HomeServiceImpl implements HomeService {
             return CommonResult.fail("Insert failed");
         }
         MoreInfoVo collection = collectionMapper.selectAllInfoById(collectionId);
+        if (loveMapper.selectToCount(userId, collectionId) != 0) isLove = true;
+        collection.setIsLove(isLove);
         return CommonResult.success(collection);
     }
 }

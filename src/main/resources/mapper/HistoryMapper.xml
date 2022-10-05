@@ -24,7 +24,7 @@
                h.count         as `count`,
                c.name          as `name`,
                c.description   as description,
-               c.img_url       as img
+               c.full_img_url       as img
         from history h
                  left join collection c on h.collection_id = c.id
         where h.user_id = #{userId}

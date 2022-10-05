@@ -18,7 +18,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public CommonResult<TagResult> getAllTag() {
+    public synchronized CommonResult<TagResult> getAllTag() {
         return CommonResult.success(cacheService.getTagName());
     }
 }

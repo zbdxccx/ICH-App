@@ -11,4 +11,5 @@ public class HistoryParam {
     private String description;
     private String time;
     private Integer count;
+    private Boolean isLove;
 }

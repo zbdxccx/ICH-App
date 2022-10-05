@@ -1,6 +1,6 @@
 package com.contest.ichapp.mapper;
 
-import com.contest.ichapp.pojo.domain.Collection;
+import com.contest.ichapp.pojo.dto.vo.CollectionVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,5 +13,5 @@ public interface LoveMapper {
 
     Integer selectToCount(Integer userId, Integer collectionId);
 
-    List<Collection> selectByUserId(Integer userId);
+    List<CollectionVo> selectByUserId(Integer userId);
 }

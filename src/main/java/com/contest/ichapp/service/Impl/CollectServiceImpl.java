@@ -16,7 +16,7 @@ public class CollectServiceImpl implements CollectService {
     LoveMapper loveMapper;
 
     @Override
-    public CommonResult<String> collect(CollectParam collectParam, HttpServletRequest request) {
+    public synchronized CommonResult<String> collect(CollectParam collectParam, HttpServletRequest request) {
         //鉴权
         Integer userId = JWTUtil.getUserId_X(request);
         if (userId == -1) return CommonResult.tokenWrong();
@@ -29,7 +29,7 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
-    public CommonResult<String> cancel(CollectParam collectParam, HttpServletRequest request) {
+    public synchronized CommonResult<String> cancel(CollectParam collectParam, HttpServletRequest request) {
         //鉴权
         Integer userId = JWTUtil.getUserId_X(request);
         if (userId == -1) return CommonResult.tokenWrong();

@@ -7,6 +7,6 @@ public class UserInfo {
     private Integer id;
     private Integer userId;
     private String sign;
-    private Integer collectedId;
-    private Integer historyId;
+    private String nickname;
+    private String headImgUrl;
 }
