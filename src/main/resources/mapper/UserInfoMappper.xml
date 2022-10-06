@@ -8,9 +8,13 @@
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
         <result column="head_img_url" jdbcType="VARCHAR" property="headImgUrl"/>
     </resultMap>
+    <insert id="insertById">
+        insert into user_info (`user_id`)
+        values (#{userId,jdbcType=INTEGER})
+    </insert>
     <update id="setNickname">
         update user_info
-        set `name` = #{name,jdbcType=VARCHAR}
+        set `nickname` = #{name,jdbcType=VARCHAR}
         where user_id = #{userId,jdbcType=VARCHAR}
     </update>
     <update id="setSign">

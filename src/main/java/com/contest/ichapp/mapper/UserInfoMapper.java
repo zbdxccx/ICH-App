@@ -11,5 +11,5 @@ public interface UserInfoMapper {
 
     Integer setSign(String sign, Integer userId);
 
-
+    Integer insertById(Integer userId);
 }

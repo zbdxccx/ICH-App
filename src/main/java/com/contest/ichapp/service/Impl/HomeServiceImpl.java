@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,7 +44,7 @@ public class HomeServiceImpl implements HomeService {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @Override
-    public synchronized CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum, HttpServletRequest request) {
+    public synchronized CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum, Integer tagId, HttpServletRequest request) {
         boolean isLogin = false;
         Integer userId = JWTUtil.getUserId_X(request);
         if (userId == -1 || userId == -2) {
@@ -53,8 +54,10 @@ public class HomeServiceImpl implements HomeService {
         List<Collection> collections;
         if ("all".equals(keyword)) collections = cacheService.getAllCollection();
         else collections = cacheService.getAllCollectionLike(keyword);
-
         if (collections.isEmpty()) return CommonResult.fail("无相关数据");
+
+        //筛出不符合tagId的数据
+        if (tagId != 0) collections.removeIf(next -> !Objects.equals(next.getTagId(), tagId));
 
         //分页n*10
         List<Collection> collectionList = collections.stream().skip((pageNum - 1) * 10L).limit(10).collect(Collectors.toList());

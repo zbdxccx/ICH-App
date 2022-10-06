@@ -8,10 +8,7 @@ import com.contest.ichapp.pojo.dto.result.HistoryResult;
 import com.contest.ichapp.service.PersonalHomeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,13 +43,13 @@ public class PersonalHomeController {
     }
 
     @PostMapping("/personal/set/name")
-    public CommonResult<String> setName(HttpServletRequest request, StringParam param) {
+    public CommonResult<String> setName(HttpServletRequest request, @RequestBody StringParam param) {
         log.info(request.getRequestURI());
         return personalHomeService.setName(request, param);
     }
 
     @PostMapping("/personal/set/sign")
-    public CommonResult<String> setSign(HttpServletRequest request, StringParam param) {
+    public CommonResult<String> setSign(HttpServletRequest request, @RequestBody StringParam param) {
         log.info(request.getRequestURI());
         return personalHomeService.setSign(request, param);
     }

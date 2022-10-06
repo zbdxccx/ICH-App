@@ -1,5 +1,6 @@
 package com.contest.ichapp.service.Impl;
 
+import com.contest.ichapp.mapper.UserInfoMapper;
 import com.contest.ichapp.mapper.UserMapper;
 import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.LoginParam;
@@ -20,6 +21,8 @@ import javax.annotation.Resource;
 public class LoginServiceImpl implements LoginService {
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private UserInfoMapper userInfoMapper;
     private final CacheService cacheService;
 
     @Autowired
@@ -35,6 +38,7 @@ public class LoginServiceImpl implements LoginService {
         UserCheckVo userCheckVoRegister = userMapper.selectToDistinct(phoneNum);
         if (!userCheckVoRegister.getCheck()) {
             if (userMapper.insertByParam(phoneNum) == 0) log.info("注册失败");
+            if (userInfoMapper.insertById(userMapper.selectUserIdByUsername(phoneNum)) == 0) log.info("注册失败");
             else log.info("注册成功");
         } else {
             UserCheckVo userCheckVo = userMapper.selectToCheck(phoneNum);
