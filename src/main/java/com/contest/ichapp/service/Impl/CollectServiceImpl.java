@@ -37,7 +37,7 @@ public class CollectServiceImpl implements CollectService {
 
         Integer collectionId = collectParam.getCollectionId();
         if (loveMapper.selectToCount(userId, collectionId) == 0) return CommonResult.fail("未收藏");
-        if (loveMapper.delete(userId, collectionId) == 0) return CommonResult.fail("删除数据失败");
-        else return CommonResult.success("删除成功");
+        if (loveMapper.delete(userId, collectionId) == 0) return CommonResult.fail("取消收藏失败");
+        else return CommonResult.success("取消收藏成功");
     }
 }

@@ -38,7 +38,7 @@ public class RecommendServiceImpl implements RecommendService {
         int tagId;
         if (userId == -1 || userId == -2) {
             log.info("未检测到登录，已随机推荐");
-            tagId = new Random().nextInt(8) + 1;
+            tagId = new Random().nextInt(7) + 1;
         } else {
             //获取个人兴趣map
             List<HistoryParam> historyParams = historyMapper.selectAllById(userId);

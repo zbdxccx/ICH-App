@@ -10,6 +10,7 @@ public interface UserInfoMapper {
     Integer setNickname(String name, Integer userId);
 
     Integer setSign(String sign, Integer userId);
+    Integer setHeadUrl(String headUrl, Integer userId);
 
     Integer insertById(Integer userId);
 }

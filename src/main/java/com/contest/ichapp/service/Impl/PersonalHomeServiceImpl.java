@@ -11,12 +11,18 @@ import com.contest.ichapp.pojo.dto.result.CollectionResult;
 import com.contest.ichapp.pojo.dto.result.HistoryResult;
 import com.contest.ichapp.pojo.dto.vo.CollectionVo;
 import com.contest.ichapp.service.PersonalHomeService;
+import com.contest.ichapp.util.cryptoUtil.StringUtil;
 import com.contest.ichapp.util.jwtUtil.JWTUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.List;
+
+import static sun.nio.ch.IOStatus.EOF;
 
 @Service
 public class PersonalHomeServiceImpl implements PersonalHomeService {
@@ -26,6 +32,9 @@ public class PersonalHomeServiceImpl implements PersonalHomeService {
     HistoryMapper historyMapper;
     @Resource
     UserInfoMapper userInfoMapper;
+
+    @Value("${img.filePath}")
+    private String imgFilePath;
 
     @Override
     public synchronized CommonResult<CollectionResult> getAllCollection(HttpServletRequest request) {
@@ -94,5 +103,35 @@ public class PersonalHomeServiceImpl implements PersonalHomeService {
         return CommonResult.success("更改成功");
     }
 
+    @Override
+    public CommonResult<String> setHeadImg(HttpServletRequest request, StringParam param) {
+        //鉴权
+        Integer userId = JWTUtil.getUserId_X(request);
+        if (userId == -1) return CommonResult.tokenWrong();
+        if (userId == -2) return CommonResult.tokenNull();
 
+        String imgName = "user" + userId + ".png";
+
+        String imgStr = param.getString();
+        if (imgStr != null && imgStr.length() > 0) {
+//            byte[] bytes = imgStr.getBytes();
+            byte[] bytes = StringUtil.hex2byte(imgStr);
+            File file = new File(imgFilePath, imgName);
+            try (InputStream in = new ByteArrayInputStream(bytes); OutputStream out = Files.newOutputStream(file.toPath())) {
+                byte[] b = new byte[1024];
+                int nRead;
+                while ((nRead = in.read(b)) != EOF) {
+                    out.write(b, 0, nRead);
+                }
+                out.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (userInfoMapper.setHeadUrl("http://haorui.xyz:8085/static/" + imgName, userId) == 0) {
+                return CommonResult.fail("更新数据库失败");
+            }
+        }
+        return CommonResult.success("设置成功");
+    }
 }

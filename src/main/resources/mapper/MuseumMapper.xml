@@ -10,4 +10,9 @@
         from museum
         where id = #{museumId} limit 1
     </select>
+    <select id="selectAllByName" resultType="com.contest.ichapp.pojo.domain.Museum">
+        select *
+        from museum
+        where name = #{museumName,jdbcType=VARCHAR} limit 1
+    </select>
 </mapper>

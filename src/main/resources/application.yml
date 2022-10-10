@@ -19,13 +19,12 @@ spring:
     static-path-pattern: /static/**
   web:
     resources:
-      static-locations: /home/lighthouse/
+      static-locations: /home/lighthouse/static/**
 
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
-
 
 
 tencent:
@@ -38,3 +37,7 @@ tencent:
     templateIdRegister: 1539063
     smsClient: ap-nanjing
     url: sms.tencentcloudapi.com
+
+img:
+  filePath: C:\Users\韦秉芮\Desktop\推荐1
+#  filePath: /home/lighthouse/static

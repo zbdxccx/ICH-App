@@ -54,4 +54,10 @@ public class PersonalHomeController {
         return personalHomeService.setSign(request, param);
     }
 
+    @PostMapping("/personal/set/head")
+    public CommonResult<String> setHeadImg(HttpServletRequest request, @RequestBody StringParam param) {
+        log.info(request.getRequestURI());
+        return personalHomeService.setHeadImg(request, param);
+    }
+
 }

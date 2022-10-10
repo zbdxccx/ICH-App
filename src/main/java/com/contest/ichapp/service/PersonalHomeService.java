@@ -19,4 +19,6 @@ public interface PersonalHomeService {
     CommonResult<String> setName(HttpServletRequest request, StringParam param);
 
     CommonResult<String> setSign(HttpServletRequest request, StringParam param);
+
+    CommonResult<String> setHeadImg(HttpServletRequest request, StringParam param);
 }

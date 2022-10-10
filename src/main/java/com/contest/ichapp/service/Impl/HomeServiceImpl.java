@@ -3,6 +3,7 @@ package com.contest.ichapp.service.Impl;
 import com.contest.ichapp.mapper.CollectionMapper;
 import com.contest.ichapp.mapper.HistoryMapper;
 import com.contest.ichapp.mapper.LoveMapper;
+import com.contest.ichapp.mapper.MuseumMapper;
 import com.contest.ichapp.pojo.domain.Collection;
 import com.contest.ichapp.pojo.dto.CommonResult;
 import com.contest.ichapp.pojo.dto.param.ImgParam;
@@ -34,7 +35,10 @@ public class HomeServiceImpl implements HomeService {
     HistoryMapper historyMapper;
     @Resource
     LoveMapper loveMapper;
+    @Resource
+    MuseumMapper museumMapper;
     private final CacheService cacheService;
+    public final static String REGEX_ALL_BRACKETS = "\\[.*?\\]|\\-";
 
     @Autowired
     public HomeServiceImpl(CacheService cacheService) {
@@ -66,12 +70,13 @@ public class HomeServiceImpl implements HomeService {
         for (Collection collection : collectionList) {
             Integer id = collection.getId();
             String name = collection.getName();
-            String location = collection.getLocation();
             String img = collection.getFullImg();
+            String location = museumMapper.selectNameById(collection.getMuseumId());
             boolean isLove = false;
-            //缓存图片高和宽，减少io开支
+
             ImgParam imgParam;
             try {
+                //缓存图片高和宽，减少io开支
                 imgParam = cacheService.ioImg(img);
             } catch (Exception e) {
                 log.info("图片为空，已跳过 [" + collection.getName() + "]");
@@ -104,6 +109,8 @@ public class HomeServiceImpl implements HomeService {
         MoreInfoVo collection = collectionMapper.selectAllInfoById(collectionId);
         if (loveMapper.selectToCount(userId, collectionId) != 0) isLove = true;
         collection.setIsLove(isLove);
+        String content = collection.getMore().replaceAll(REGEX_ALL_BRACKETS, "");
+        collection.setMore(content);
         return CommonResult.success(collection);
     }
 }
