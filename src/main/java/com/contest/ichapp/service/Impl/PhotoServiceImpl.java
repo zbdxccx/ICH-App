@@ -1,8 +1,10 @@
 package com.contest.ichapp.service.Impl;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.contest.ichapp.mapper.CollectionMapper;
 import com.contest.ichapp.pojo.domain.Collection;
 import com.contest.ichapp.pojo.dto.CommonResult;
+import com.contest.ichapp.pojo.dto.param.StringParam;
 import com.contest.ichapp.service.PhotoService;
 import com.contest.ichapp.util.imgUtil.ImgSearchUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +28,13 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public CommonResult<String> searchImg(HttpServletRequest request, String ImgBase64) {
-        return null;
+    public CommonResult<Collection> searchImg(HttpServletRequest request, StringParam param) {
+        String imgBase64 = param.getString();
+        String search = ImgSearchUtil.sameHqSearch(imgBase64);
+        JSONObject jsonObject = JSONObject.parseObject(search);
+        Integer id = null;
+        if (jsonObject != null) id = (Integer) jsonObject.get("id");
+        Collection collection = collectionMapper.selectById(id);
+        return CommonResult.success(collection);
     }
 }

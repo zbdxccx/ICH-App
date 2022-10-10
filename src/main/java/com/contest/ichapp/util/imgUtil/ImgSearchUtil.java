@@ -4,7 +4,6 @@ package com.contest.ichapp.util.imgUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.contest.ichapp.pojo.domain.Collection;
 import com.contest.ichapp.util.baiduTool.Base64Util;
-import com.contest.ichapp.util.baiduTool.FileUtil;
 import com.contest.ichapp.util.baiduTool.HttpUtil;
 
 import javax.imageio.ImageIO;
@@ -19,7 +18,6 @@ public class ImgSearchUtil {
     public static String sameHqAdd(Collection collection) {
         // 请求url
         String url = "https://aip.baidubce.com/rest/2.0/realtime_search/same_hq/add";
-
 
         try {
             BufferedImage read = ImageIO.read(new URL(collection.getFullImg()));
@@ -44,14 +42,15 @@ public class ImgSearchUtil {
         return null;
     }
 
-    public static String sameHqSearch() {
+    public static String sameHqSearch(String imgStr) {
         // 请求url
         String url = "https://aip.baidubce.com/rest/2.0/realtime_search/same_hq/search";
         try {
-            // 本地文件路径
-            String filePath = "C:\\Users\\韦秉芮\\Desktop\\tset.jpeg";
-            byte[] imgData = FileUtil.readFileByBytes(filePath);
-            String imgStr = Base64Util.encode(imgData);
+//            // 本地文件路径
+//            String filePath = "C:\\Users\\韦秉芮\\Desktop\\tset.jpeg";
+//            byte[] imgData = FileUtil.readFileByBytes(filePath);
+//            String imgStr = Base64Util.encode(imgData);
+
             String imgParam = URLEncoder.encode(imgStr, "UTF-8");
 
             String param = "image=" + imgParam;
