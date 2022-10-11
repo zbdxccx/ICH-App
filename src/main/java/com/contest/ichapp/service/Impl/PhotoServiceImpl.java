@@ -21,9 +21,11 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public CommonResult<String> addImg(Integer collectionId) {
-        Collection collection = collectionMapper.selectById(collectionId);
-        ImgSearchUtil.sameHqAdd(collection);
-        log.info("第" + collectionId + "张图片已添加入图库");
+        for (int i = 1; i <= 63; i++) {
+            Collection collection = collectionMapper.selectById(i);
+            ImgSearchUtil.sameHqAdd(collection);
+            log.info("第" + i + "张图片已添加入图库");
+        }
         return CommonResult.success("succeed");
     }
 
@@ -32,8 +34,16 @@ public class PhotoServiceImpl implements PhotoService {
         String imgBase64 = param.getString();
         String search = ImgSearchUtil.sameHqSearch(imgBase64);
         JSONObject jsonObject = JSONObject.parseObject(search);
+        String result = null;
+        if (jsonObject != null) result = jsonObject.getString("result");
+        assert result != null;
+        if (result.isEmpty()) return CommonResult.success("未找到相关藏品");
+        JSONObject jsonObjectBrief = JSONObject.parseObject(result.substring(1, result.length() - 1));
+        String brief = null;
+        if (jsonObjectBrief != null) brief = jsonObjectBrief.getString("brief");
+        JSONObject jsonObjectId = JSONObject.parseObject(brief);
         Integer id = null;
-        if (jsonObject != null) id = (Integer) jsonObject.get("id");
+        if (jsonObjectId != null) id = jsonObjectId.getInteger("id");
         Collection collection = collectionMapper.selectById(id);
         return CommonResult.success(collection);
     }
