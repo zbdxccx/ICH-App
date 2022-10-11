@@ -6,5 +6,4 @@ import lombok.Data;
 public class PersonalParam {
     private String name;
     private String sign;
-    private String headUrl;
 }

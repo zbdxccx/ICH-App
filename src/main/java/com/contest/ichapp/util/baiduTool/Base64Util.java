@@ -59,7 +59,6 @@ public class Base64Util {
                 to.append("=");
             }
         }
-
         return to.toString();
     }
 }

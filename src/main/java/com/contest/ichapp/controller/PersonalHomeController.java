@@ -2,13 +2,14 @@ package com.contest.ichapp.controller;
 
 import com.contest.ichapp.pojo.domain.UserInfo;
 import com.contest.ichapp.pojo.dto.CommonResult;
-import com.contest.ichapp.pojo.dto.param.StringParam;
+import com.contest.ichapp.pojo.dto.param.PersonalParam;
 import com.contest.ichapp.pojo.dto.result.CollectionResult;
 import com.contest.ichapp.pojo.dto.result.HistoryResult;
 import com.contest.ichapp.service.PersonalHomeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,22 +43,16 @@ public class PersonalHomeController {
         return personalHomeService.getPersonalInfo(request);
     }
 
-    @PostMapping("/personal/set/name")
-    public CommonResult<String> setName(HttpServletRequest request, @RequestBody StringParam param) {
+    @PostMapping("/personal/set/info")
+    public CommonResult<String> setNameAndSign(HttpServletRequest request, PersonalParam param) {
         log.info(request.getRequestURI());
-        return personalHomeService.setName(request, param);
-    }
-
-    @PostMapping("/personal/set/sign")
-    public CommonResult<String> setSign(HttpServletRequest request, @RequestBody StringParam param) {
-        log.info(request.getRequestURI());
-        return personalHomeService.setSign(request, param);
+        return personalHomeService.setNameAndSign(request, param);
     }
 
     @PostMapping("/personal/set/head")
-    public CommonResult<String> setHeadImg(HttpServletRequest request, @RequestBody StringParam param) {
+    CommonResult<String> setHeadImg(HttpServletRequest request, @RequestBody MultipartFile file) {
         log.info(request.getRequestURI());
-        return personalHomeService.setHeadImg(request, param);
+        return personalHomeService.setHeadImg(request, file);
     }
 
 }

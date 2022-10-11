@@ -13,7 +13,6 @@ import java.net.URLEncoder;
 
 public class ImgSearchUtil {
 
-
     public static void sameHqAdd(Collection collection) {
         // 请求url
         String url = "https://aip.baidubce.com/rest/2.0/realtime_search/same_hq/add";

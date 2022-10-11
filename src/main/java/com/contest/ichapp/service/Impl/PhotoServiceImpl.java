@@ -20,7 +20,7 @@ public class PhotoServiceImpl implements PhotoService {
     CollectionMapper collectionMapper;
 
     @Override
-    public CommonResult<String> addImg(Integer collectionId) {
+    public synchronized CommonResult<String> addImg(Integer collectionId) {
         for (int i = 1; i <= 63; i++) {
             Collection collection = collectionMapper.selectById(i);
             ImgSearchUtil.sameHqAdd(collection);
@@ -30,7 +30,7 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public CommonResult<Collection> searchImg(HttpServletRequest request, StringParam param) {
+    public synchronized CommonResult<Collection> searchImg(HttpServletRequest request, StringParam param) {
         String imgBase64 = param.getString();
         String search = ImgSearchUtil.sameHqSearch(imgBase64);
         JSONObject jsonObject = JSONObject.parseObject(search);
