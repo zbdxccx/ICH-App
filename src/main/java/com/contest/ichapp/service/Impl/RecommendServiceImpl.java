@@ -34,9 +34,9 @@ public class RecommendServiceImpl implements RecommendService {
     @Override
     public synchronized CommonResult<RecommendParam> recommend(HttpServletRequest request) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
+        Integer userId = JWTUtil.getUserIdCheck(request);
         int tagId;
-        if (userId == -1 || userId == -2) {
+        if (userId == TOKEN_WRONG || userId == TOKEN_NULL) {
             log.info("未检测到登录，已随机推荐");
             tagId = new Random().nextInt(7) + 1;
         } else {

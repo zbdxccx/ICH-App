@@ -70,6 +70,7 @@ public class LoginServiceImpl implements LoginService {
         String phoneNum = param.getPhoneNum();
         String verificationCode = param.getVerificationCode();
         String verificationCodeCache = cacheService.getVerificationCode(phoneNum);
+
         return verificationCodeCache.equals(verificationCode);
     }
 }

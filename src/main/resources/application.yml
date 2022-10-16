@@ -39,5 +39,5 @@ tencent:
     url: sms.tencentcloudapi.com
 
 img:
-  filePath: C:\Users\韦秉芮\Desktop\推荐1\
-#  filePath: /home/lighthouse/static/
+#  filePath: C:\Users\韦秉芮\Desktop\推荐1\
+  filePath: /home/lighthouse/static/

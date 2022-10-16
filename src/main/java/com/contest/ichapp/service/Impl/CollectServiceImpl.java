@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import static com.contest.ichapp.common.Constant.TOKEN_NULL;
+import static com.contest.ichapp.common.Constant.TOKEN_WRONG;
+
 @Service
 public class CollectServiceImpl implements CollectService {
     @Resource
@@ -18,9 +21,9 @@ public class CollectServiceImpl implements CollectService {
     @Override
     public synchronized CommonResult<String> collect(CollectParam collectParam, HttpServletRequest request) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         Integer collectionId = collectParam.getCollectionId();
         if (loveMapper.selectToCount(userId, collectionId) != 0) return CommonResult.fail("已收藏");
@@ -31,9 +34,9 @@ public class CollectServiceImpl implements CollectService {
     @Override
     public synchronized CommonResult<String> cancel(CollectParam collectParam, HttpServletRequest request) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         Integer collectionId = collectParam.getCollectionId();
         if (loveMapper.selectToCount(userId, collectionId) == 0) return CommonResult.fail("未收藏");

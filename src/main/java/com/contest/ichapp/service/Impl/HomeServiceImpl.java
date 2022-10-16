@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.contest.ichapp.common.Constant.TOKEN_NULL;
+import static com.contest.ichapp.common.Constant.TOKEN_WRONG;
+
 @Service
 @Slf4j
 public class HomeServiceImpl implements HomeService {
@@ -50,8 +53,8 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public synchronized CommonResult<InfoResult> getAllInfo(String keyword, Integer pageNum, Integer tagId, HttpServletRequest request) {
         boolean isLogin = false;
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1 || userId == -2) {
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG || userId == TOKEN_NULL) {
             log.info("未检测到登录，无收藏状态");
         } else isLogin = true;
 
@@ -64,7 +67,10 @@ public class HomeServiceImpl implements HomeService {
         if (tagId != 0) collections.removeIf(next -> !Objects.equals(next.getTagId(), tagId));
 
         //分页n*10
-        List<Collection> collectionList = collections.stream().skip((pageNum - 1) * 10L).limit(10).collect(Collectors.toList());
+        List<Collection> collectionList = collections.stream()
+                .skip((pageNum - 1) * 10L)
+                .limit(10)
+                .collect(Collectors.toList());
 
         List<InfoParam> params = new ArrayList<>();
         for (Collection collection : collectionList) {
@@ -93,9 +99,9 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public synchronized CommonResult<MoreInfoVo> getMoreInfo(Integer collectionId, HttpServletRequest request) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
         //添加历史记录
         int count = 0;
         boolean isLove = false;

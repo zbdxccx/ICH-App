@@ -17,6 +17,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.contest.ichapp.common.Constant.TOKEN_NULL;
+import static com.contest.ichapp.common.Constant.TOKEN_WRONG;
+
 @Service
 public class AppraiseServiceImpl implements AppraiseService {
 
@@ -28,13 +31,12 @@ public class AppraiseServiceImpl implements AppraiseService {
     @Override
     public CommonResult<String> appraise(HttpServletRequest request, AppraisePostParam param) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         String appraise = param.getAppraise();
         Integer collectionId = param.getCollectionId();
-        Integer flag = param.getFlag();
 
         if (appraiseMapper.insertOne(collectionId, userId, appraise, dateFormat.format(new Date())) == 0)
             return CommonResult.fail("评论失败");
@@ -44,9 +46,9 @@ public class AppraiseServiceImpl implements AppraiseService {
     @Override
     public CommonResult<AppraiseResult> viewAppraise(HttpServletRequest request, Integer collectionId, Integer pageNum) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         List<AppraiseParam> appraiseParams = appraiseMapper.selectAllByCollectionId(collectionId, userId);
         //分页n*10
@@ -58,9 +60,9 @@ public class AppraiseServiceImpl implements AppraiseService {
     @Override
     public CommonResult<String> deleteAppraise(HttpServletRequest request, DeleteAppraiseParam param) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         if (appraiseMapper.deleteOne(param.getCollectionId(), userId, param.getTime()) == 0) {
             return CommonResult.fail("删除评论失败");

@@ -12,6 +12,8 @@ import com.contest.ichapp.pojo.dto.result.HistoryResult;
 import com.contest.ichapp.pojo.dto.vo.CollectionVo;
 import com.contest.ichapp.service.PersonalHomeService;
 import com.contest.ichapp.util.jwtUtil.JWTUtil;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,11 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+
+import static com.contest.ichapp.common.Constant.TOKEN_NULL;
+import static com.contest.ichapp.common.Constant.TOKEN_WRONG;
 
 @Slf4j
 @Service
@@ -41,9 +45,9 @@ public class PersonalHomeServiceImpl implements PersonalHomeService {
     @Override
     public synchronized CommonResult<CollectionResult> getAllCollection(HttpServletRequest request) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         List<CollectionVo> collections = loveMapper.selectByUserId(userId);
         for (CollectionVo collectionVo : collections) {
@@ -57,9 +61,9 @@ public class PersonalHomeServiceImpl implements PersonalHomeService {
     @Override
     public synchronized CommonResult<HistoryResult> getAllHistory(HttpServletRequest request) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         List<HistoryParam> histories = historyMapper.selectAllById(userId);
         for (HistoryParam historyParam : histories) {
@@ -73,9 +77,9 @@ public class PersonalHomeServiceImpl implements PersonalHomeService {
     @Override
     public synchronized CommonResult<UserInfo> getPersonalInfo(HttpServletRequest request) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         UserInfo userInfo = userInfoMapper.selectAllById(userId);
         if (userInfo.getNickname() == null) userInfo.setNickname("游客" + userId);
@@ -86,31 +90,31 @@ public class PersonalHomeServiceImpl implements PersonalHomeService {
     @Override
     public synchronized CommonResult<String> setNameAndSign(HttpServletRequest request, PersonalParam param) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
-        if (userInfoMapper.setNickname(param.getName(), userId) == 0) return CommonResult.fail("name更改失败");
-        if (userInfoMapper.setSign(param.getSign(), userId) == 0) return CommonResult.fail("sign更改失败");
+        if (userInfoMapper.setNameAndSign(param.getName(), param.getSign(), userId) == 0)
+            return CommonResult.fail("更改失败");
         return CommonResult.success("更改成功");
     }
 
     @Override
+    @SneakyThrows
     public synchronized CommonResult<String> setHeadImg(HttpServletRequest request, MultipartFile file) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         String imgName = "user" + userId + ".png";
         String imgFilePathAll = imgFilePath + imgName;
-        try (OutputStream out = Files.newOutputStream(Paths.get(imgFilePathAll))) {
-            out.write(file.getBytes());
-            out.flush();
-            log.info("[NewPng]" + imgFilePathAll);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        @Cleanup OutputStream out = Files.newOutputStream(Paths.get(imgFilePathAll));
+        out.write(file.getBytes());
+        out.flush();
+        log.info("[NewPng]" + imgFilePathAll);
+
         if (userInfoMapper.setHeadUrl("http://haorui.xyz:8085/static/" + imgName, userId) == 0) {
             return CommonResult.fail("更新数据库失败");
         }

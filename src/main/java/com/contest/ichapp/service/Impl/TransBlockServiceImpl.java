@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.contest.ichapp.common.Constant.TOKEN_NULL;
+import static com.contest.ichapp.common.Constant.TOKEN_WRONG;
+
 @Service
 @Slf4j
 public class TransBlockServiceImpl implements TransBlockService {
@@ -49,9 +52,9 @@ public class TransBlockServiceImpl implements TransBlockService {
     @SuppressWarnings("unchecked")
     public synchronized CommonResult<String> transOne(HttpServletRequest request, TransParam transParam) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         String receiver = transParam.getReceiver();
         Integer collectionId = transParam.getCollectionId();
@@ -94,9 +97,9 @@ public class TransBlockServiceImpl implements TransBlockService {
     @SuppressWarnings("unchecked")
     public synchronized CommonResult<CheckBlockOriginParam> checkBlock(HttpServletRequest request, String transId) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         ArrayList<Block> chain = (ArrayList<Block>) redisUtil.get(transId);
         BlockChain blockChain = new BlockChain();
@@ -128,9 +131,9 @@ public class TransBlockServiceImpl implements TransBlockService {
     @Override
     public synchronized CommonResult<AllBlockResult> getCollectionBlock(HttpServletRequest request) {
         //鉴权
-        Integer userId = JWTUtil.getUserId_X(request);
-        if (userId == -1) return CommonResult.tokenWrong();
-        if (userId == -2) return CommonResult.tokenNull();
+        Integer userId = JWTUtil.getUserIdCheck(request);
+        if (userId == TOKEN_WRONG) return CommonResult.tokenWrong();
+        if (userId == TOKEN_NULL) return CommonResult.tokenNull();
 
         List<AllBlockParam> allBlockParams = transInfoMapper.selectByUserId(userId);
         if (allBlockParams.size() == 0) return CommonResult.success("未拥有任何藏品");

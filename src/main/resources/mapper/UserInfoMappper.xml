@@ -12,20 +12,16 @@
         insert into user_info (`user_id`)
         values (#{userId,jdbcType=INTEGER})
     </insert>
-    <update id="setNickname">
+    <update id="setNameAndSign">
         update user_info
-        set `nickname` = #{name,jdbcType=VARCHAR}
-        where user_id = #{userId,jdbcType=VARCHAR}
-    </update>
-    <update id="setSign">
-        update user_info
-        set `sign` = #{sign,jdbcType=VARCHAR}
-        where user_id = #{userId,jdbcType=VARCHAR}
+        set `nickname` = #{name,jdbcType=VARCHAR},
+            `sign`=#{sign,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=INTEGER}
     </update>
     <update id="setHeadUrl">
         update user_info
         set `head_img_url` = #{headUrl,jdbcType=VARCHAR}
-        where user_id = #{userId,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=INTEGER}
     </update>
     <select id="selectAllById" resultType="com.contest.ichapp.pojo.domain.UserInfo">
         select *

@@ -14,4 +14,6 @@ public class Constant {
     public static final String WEEK_FORMAT = "E";
     public static final String PRIVATE_SIGN = "WBR_PRIVATE_SIGN";
     public static final long EXPIRE_DATE = 1000 * 60 * 60 * 24 * 7;
+    public static final int TOKEN_WRONG = -1;
+    public static final int TOKEN_NULL = -2;
 }

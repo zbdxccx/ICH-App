@@ -6,5 +6,4 @@ import lombok.Data;
 public class AppraisePostParam {
     private Integer collectionId;
     private String appraise;
-    private Integer flag;
 }

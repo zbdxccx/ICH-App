@@ -5,15 +5,17 @@ import com.contest.ichapp.pojo.dto.param.CheckBlockOriginParam;
 import com.contest.ichapp.pojo.dto.param.TransParam;
 import com.contest.ichapp.pojo.dto.result.AllBlockResult;
 import com.contest.ichapp.service.TransBlockService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
-@RestController
+
+@Validated
 @CrossOrigin
-@Slf4j
+@RestController
 public class TransBlockController {
     private final TransBlockService transBlockService;
 
@@ -23,20 +25,17 @@ public class TransBlockController {
     }
 
     @PostMapping("/info/trans")
-    public CommonResult<String> transOne(HttpServletRequest request, @RequestBody TransParam param) {
-        log.info("info/trans");
+    public CommonResult<String> transOne(HttpServletRequest request, @RequestBody @Valid TransParam param) {
         return transBlockService.transOne(request, param);
     }
 
     @GetMapping("/info/trans/check")
-    public CommonResult<CheckBlockOriginParam> checkBlock(HttpServletRequest request, @RequestParam String transId) {
-        log.info("info/trans/check");
+    public CommonResult<CheckBlockOriginParam> checkBlock(HttpServletRequest request, @RequestParam @Valid String transId) {
         return transBlockService.checkBlock(request, transId);
     }
 
     @GetMapping("/info/trans/all")
     public CommonResult<AllBlockResult> getCollectionBlock(HttpServletRequest request) {
-        log.info("info/trans/all");
         return transBlockService.getCollectionBlock(request);
     }
 }

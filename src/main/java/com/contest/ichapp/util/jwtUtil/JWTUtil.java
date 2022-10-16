@@ -3,8 +3,8 @@ package com.contest.ichapp.util.jwtUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.Cookie;
@@ -13,8 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.contest.ichapp.common.Constant.EXPIRE_DATE;
-import static com.contest.ichapp.common.Constant.PRIVATE_SIGN;
+import static com.contest.ichapp.common.Constant.*;
 
 /**
  * JWT生成及校验工具类
@@ -57,15 +56,10 @@ public class JWTUtil {
         return true;
     }
 
+    @SneakyThrows
     public static Integer getUserId(String token) {
-        try {
-            DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("userId").asInt();
-
-        } catch (JWTDecodeException e) {
-            e.printStackTrace();
-        }
-        return null;
+        DecodedJWT jwt = JWT.decode(token);
+        return jwt.getClaim("userId").asInt();
     }
 
     public static String getToken(HttpServletRequest request) {
@@ -84,14 +78,14 @@ public class JWTUtil {
         return token;
     }
 
-    public static Integer getUserId_X(HttpServletRequest request) {
+    public static Integer getUserIdCheck(HttpServletRequest request) {
         String token;
         try {
             token = JWTUtil.getToken(request);
-            if (JWTUtil.checkTokenWrong(token)) return -1;
-            if (token == null) return -2;
+            if (JWTUtil.checkTokenWrong(token)) return TOKEN_WRONG;
+            if (token == null) return TOKEN_NULL;
         } catch (NullPointerException e) {
-            return -2;
+            return TOKEN_NULL;
         }
         return JWTUtil.getUserId(token);
     }
