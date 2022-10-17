@@ -10,6 +10,16 @@
         <result column="img_url" jdbcType="VARCHAR" property="img"/>
         <result column="full_img_url" jdbcType="VARCHAR" property="fullImg"/>
     </resultMap>
+    <insert id="insertOne">
+        insert into collection(`name`, description, location, dynasty_id, museum_id, tag_id, feature, `more`)
+        values (#{name}, #{description}, #{location}, #{dynastyId}, #{museumId}, #{tagId}, #{feature}, #{more})
+    </insert>
+    <update id="updateUrl">
+        update collection
+        set img_url=#{url},
+            full_img_url=#{url}
+        where id = #{id}
+    </update>
     <select id="selectById" resultMap="BaseResultMap">
         select *
         from collection
@@ -53,6 +63,7 @@
         select *
         from collection
         where tag_id = #{tagId,jdbcType=INTEGER}
+          and id between 1 and 63
         order by rand() limit 1
     </select>
     <select id="selectAllInfoByTransId" resultType="com.contest.ichapp.pojo.domain.Collection">

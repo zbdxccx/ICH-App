@@ -2,9 +2,12 @@ package com.contest.ichapp.controller;
 
 import com.contest.ichapp.pojo.domain.UserInfo;
 import com.contest.ichapp.pojo.dto.CommonResult;
+import com.contest.ichapp.pojo.dto.param.AddParam;
 import com.contest.ichapp.pojo.dto.param.PersonalParam;
+import com.contest.ichapp.pojo.dto.param.museumIdParam;
 import com.contest.ichapp.pojo.dto.result.CollectionResult;
 import com.contest.ichapp.pojo.dto.result.HistoryResult;
+import com.contest.ichapp.pojo.dto.result.LikeToGoResult;
 import com.contest.ichapp.service.PersonalHomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -48,8 +51,32 @@ public class PersonalHomeController {
     }
 
     @PostMapping("/personal/set/head")
-    CommonResult<String> setHeadImg(HttpServletRequest request, @RequestBody @Valid MultipartFile file) {
+    public CommonResult<String> setHeadImg(HttpServletRequest request, @RequestBody @Valid MultipartFile file) {
         return personalHomeService.setHeadImg(request, file);
     }
 
+    @PostMapping("/like/go/set")
+    public CommonResult<String> setLikeGo(HttpServletRequest request, @RequestBody @Valid museumIdParam param) {
+        return personalHomeService.setLikeGo(request, param.getMuseumId());
+    }
+
+    @PostMapping("/like/go/delete")
+    public CommonResult<String> deleteLikeGo(HttpServletRequest request, @RequestBody @Valid museumIdParam param) {
+        return personalHomeService.deleteLikeGo(request, param.getMuseumId());
+    }
+
+    @GetMapping("/like/go/get")
+    public CommonResult<LikeToGoResult> getLikeGo(HttpServletRequest request) {
+        return personalHomeService.getLikeGo(request);
+    }
+
+    @PostMapping("/add/content")
+    CommonResult<String> addCollection(HttpServletRequest request, @RequestBody @Valid AddParam param) {
+        return personalHomeService.addCollection(request, param);
+    }
+
+    @PostMapping("/add/img")
+    CommonResult<String> addUrl(HttpServletRequest request, @RequestBody @Valid MultipartFile file) {
+        return personalHomeService.addUrl(request, file);
+    }
 }

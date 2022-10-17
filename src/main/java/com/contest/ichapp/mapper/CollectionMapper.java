@@ -20,5 +20,9 @@ public interface CollectionMapper {
 
     Integer selectCountAll();
 
+    Integer updateUrl(String url, Integer id);
+
     List<Collection> selectAllLike(String keyword);
+
+    Integer insertOne(String name, String description, String location, Integer dynastyId, Integer museumId, Integer tagId, String feature, String more);
 }
