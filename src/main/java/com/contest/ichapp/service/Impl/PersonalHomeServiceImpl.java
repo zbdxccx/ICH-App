@@ -170,7 +170,7 @@ public class PersonalHomeServiceImpl implements PersonalHomeService {
         String feature = param.getFeature();
         String more = param.getMore();
         collectionMapper.insertOne(name, description, location, 15, 11, 8, feature, more);
-        //TODO 假数据
+        //TODO 用户上传藏品分类为其他
         return CommonResult.success("succeed insert");
     }
 

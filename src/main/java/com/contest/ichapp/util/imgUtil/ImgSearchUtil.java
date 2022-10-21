@@ -28,7 +28,7 @@ public class ImgSearchUtil {
 
         String param = "brief=" + "{\"id\":" + collection.getId() + ",\"name\":\"" + collection.getName() + "\"}" + "&image=" + imgParam + "&tags=" + collection.getTagId() + ",1";
         // 注意这里仅为了简化编码每一次请求都去获取access_token，线上环境access_token有过期时间， 客户端可自行缓存，过期后重新获取。
-        String accessToken = "24.4c296bc549fb1d7efb598ddaf408d312.2592000.1667998119.282335-27842220";
+        String accessToken = "24.10ab45dfe6f00b986d563d7d26ad979b.2592000.1668950963.282335-27842220";
         HttpUtil.post(url, accessToken, param);
 
     }
@@ -41,7 +41,7 @@ public class ImgSearchUtil {
         String imgParam = URLEncoder.encode(imgStr, "UTF-8");
         String param = "image=" + imgParam;
         // 注意这里仅为了简化编码每一次请求都去获取access_token，线上环境access_token有过期时间， 客户端可自行缓存，过期后重新获取。
-        String accessToken = "24.4c296bc549fb1d7efb598ddaf408d312.2592000.1667998119.282335-27842220";
+        String accessToken = "24.10ab45dfe6f00b986d563d7d26ad979b.2592000.1668950963.282335-27842220";
         return HttpUtil.post(url, accessToken, param);
     }
 }
