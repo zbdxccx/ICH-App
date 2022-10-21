@@ -6,9 +6,9 @@ spring:
     name: ICH-App
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://43.143.162.177:3306/ichapp?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
-    username: root
-    password: weibingrui1808.
+    url: jdbc:mysql://{xxxxxx}/ichapp?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: xxxxxxx
+    password: xxxxxxx
   redis:
     host: localhost
     port: 6379
@@ -29,9 +29,9 @@ mybatis:
 
 tencent:
   sms:
-    keyId: AKIDykGXZLr78tOdMq31jBOL3VifMo1yf6IE
-    keySecret: kniOozua0A5lR0OaYIo6Azc2EByYxA9x
-    smsSdkAppId: 1400735487
+    keyId: xxxxxxxxxxxx #腾讯云keyId
+    keySecret: xxxxxxxxxxxx #腾讯云keySecret
+    smsSdkAppId: xxxxxxxxxxxx #腾讯云appId
     signName: 拾旧空间公众号
     templateIdLogin: 1539056
     templateIdRegister: 1539063
@@ -39,5 +39,4 @@ tencent:
     url: sms.tencentcloudapi.com
 
 img:
-#  filePath: C:\Users\韦秉芮\Desktop\推荐1\
   filePath: /home/lighthouse/static/
