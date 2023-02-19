@@ -85,7 +85,7 @@ public class TransBlockServiceImpl implements TransBlockService {
         redisUtil.remove(transId);
         if (!blockChain.isChainValid()) {
             blockChain.blockChain.remove(blockChain.blockChain.size() - 1);
-            log.info("区块异常，清空区块链");
+            log.info("区块异常，清空区块");
             return CommonResult.fail("block error");
         }
         redisUtil.set(transId, blockChain.blockChain);

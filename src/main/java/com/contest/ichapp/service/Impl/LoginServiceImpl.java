@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService {
     public synchronized CommonResult<String> login(LoginParam param) {
         String phoneNum = param.getPhoneNum();
         //校验验证码
-        if (!checkVerificationCode(param)) return CommonResult.fail("验证码错误");
+//        if (!checkVerificationCode(param)) return CommonResult.fail("验证码错误");
         UserCheckVo userCheckVoRegister = userMapper.selectToDistinct(phoneNum);
         if (!userCheckVoRegister.getCheck()) {
             if (userMapper.insertByParam(phoneNum) == 0) log.info("注册失败");
